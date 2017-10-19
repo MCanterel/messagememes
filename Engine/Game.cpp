@@ -21,6 +21,7 @@
 #include "MainWindow.h"
 #include "Game.h"
 #include "SpriteCodex.h"
+#include <assert.h>
 
 Game::Game ( MainWindow& wnd )
 	:
@@ -71,7 +72,9 @@ void Game::UpdateModel ( )
 			}
 			else  { //if ( fState == MemeField::State::Fucked || fState == MemeField::State::Winrar )
 				if ( e.GetType ( ) == Mouse::Event::Type::LPress ) {  //needed this conditional to insert pause
-					delete pField;
+					DestroyField ( );
+					//delete pField;
+					pField = nullptr;
 					state = State::SelectionMenu;
 				}
 			}
@@ -82,23 +85,33 @@ void Game::UpdateModel ( )
 			switch ( s )
 			{
 			case SelectionMenu::Size::Small:
-				pField = new MemeField ( gfx.GetRect ( ).GetCenter ( ), (int)Size::Small * MemeField::GetMemeBaseNum ( ),	(int)Size::Small * MemeField::GetWidth ( ), (int)Size::Small * MemeField::GetHeight ( ) );
-				state = State::Memesweeper;
+				CreateField ( (int)Size::Small * MemeField::GetMemeBaseNum ( ), (int)Size::Small * MemeField::GetWidth ( ), (int)Size::Small * MemeField::GetHeight ( ) );
 				break;
 
 			case SelectionMenu::Size::Medium:
-				pField = new MemeField ( gfx.GetRect ( ).GetCenter ( ), (int)Size::Medium * MemeField::GetMemeBaseNum ( ),	(int)Size::Medium * MemeField::GetWidth ( ), (int)Size::Medium * MemeField::GetHeight ( ) );
-				state = State::Memesweeper;
+				CreateField ( (int)Size::Medium * MemeField::GetMemeBaseNum ( ), (int)Size::Medium * MemeField::GetWidth ( ), (int)Size::Medium * MemeField::GetHeight ( ) );
 				break;
 
 			case SelectionMenu::Size::Large:
-				pField = new MemeField ( gfx.GetRect ( ).GetCenter ( ), (int)Size::Large * MemeField::GetMemeBaseNum ( ),	(int)Size::Large * MemeField::GetWidth ( ), (int)Size::Large * MemeField::GetHeight ( ) );
-				state = State::Memesweeper;
+				CreateField ( (int)Size::Large * MemeField::GetMemeBaseNum ( ), (int)Size::Large * MemeField::GetWidth ( ), (int)Size::Large * MemeField::GetHeight ( ) );
 				break;	
 			}
-			//state = State::Memesweeper;
 		}
 	}
+}
+
+void Game::CreateField ( int nMemes,int width, int height )
+{
+	assert ( pField == nullptr );
+	pField = new MemeField ( gfx.GetRect ( ).GetCenter ( ), nMemes, width, height );
+	state = State::Memesweeper;
+
+}
+
+void Game::DestroyField ( )
+{
+	delete pField;
+	pField = nullptr;
 }
 
 void Game::ComposeFrame ( )

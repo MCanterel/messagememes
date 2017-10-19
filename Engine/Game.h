@@ -45,6 +45,8 @@ public:
 	Game( const Game& ) = delete;
 	Game& operator=( const Game& ) = delete;
 	void Go();
+	void CreateField ( int nMemes, int width, int height );
+	void DestroyField ( );
 private:
 	void ComposeFrame();
 	void UpdateModel();

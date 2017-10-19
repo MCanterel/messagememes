@@ -27,7 +27,7 @@ Game::Game( MainWindow& wnd )
 	wnd( wnd ),
 	gfx( wnd ),
 	menu( { gfx.GetRect().GetCenter().x,200 } ),
-	field ( gfx.GetRect ( ).GetCenter ( ), 4 )  //keep this?
+	field( gfx.GetRect().GetCenter(),4 )
 {
 }
 
@@ -65,35 +65,17 @@ void Game::UpdateModel()
 					}
 				}
 			}
-			else {
-				const Vei2 mousePos = e.GetPos ( );
-				if ( !field.GetRect ( ).Contains ( mousePos ) )
-				{
-					//field.SetState ( MemeField::State::Memeing );
-					state = State::SelectionMenu;
-				}
-
-			}
 		}
-		
 		else
 		{
 			const SelectionMenu::Size s = menu.ProcessMouse( e );
 			switch( s )
 			{
 			case SelectionMenu::Size::Small:
-				field.SetSize ( MemeField::FieldSize::Small );
-				break;
 			case SelectionMenu::Size::Medium:
-				field.SetSize ( MemeField::FieldSize::Medium );
-				break;
 			case SelectionMenu::Size::Large:
-				field.SetSize ( MemeField::FieldSize::Large );
-				break;
-
+				state = State::Memesweeper;
 			}
-			MemeField * field = new MemeField ( gfx.GetRect ( ).GetCenter ( ), 4 );
-			state = State::Memesweeper;
 		}
 	}
 }

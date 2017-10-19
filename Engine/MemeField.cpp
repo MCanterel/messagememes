@@ -121,11 +121,6 @@ void MemeField::Tile::SetNeighborMemeCount( int memeCount )
 	nNeighborMemes = memeCount;
 }
 
-void MemeField::SetState ( MemeField::State state )
-{
-	this->state = state;
-}
-
 MemeField::MemeField( const Vei2& center,int nMemes )
 	:
 	topLeft( center - Vei2( width * SpriteCodex::tileSize,height * SpriteCodex::tileSize ) / 2 )
@@ -209,25 +204,7 @@ void MemeField::OnFlagClick( const Vei2 & screenPos )
 
 MemeField::State MemeField::GetState() const
 {
-	return this->state;
-}
-
-void MemeField::SetSize ( FieldSize size )
-{
-	switch ( size ) {
-	case MemeField::FieldSize::Small:
-		width = smallField.first;
-		height = smallField.second;
-		break;
-	case MemeField::FieldSize::Medium:
-		width = mediumField.first;
-		height = mediumField.second;
-		break;
-	case MemeField::FieldSize::Large:
-		width = largeField.first;
-		height = largeField.second;
-		break;
-	}
+	return state;
 }
 
 void MemeField::RevealTile( const Vei2& gridPos )
@@ -238,7 +215,7 @@ void MemeField::RevealTile( const Vei2& gridPos )
 		tile.Reveal();
 		if( tile.HasMeme() )
 		{
-			MemeField::SetState ( MemeField::State::Fucked );
+			state = State::Fucked;
 			sndLose.Play();
 		}
 		else if( tile.HasNoNeighborMemes() )

@@ -71,9 +71,11 @@ void Game::UpdateModel ( )
 				}
 			}
 			else if ( fState == MemeField::State::Fucked || fState == MemeField::State::Winrar ) {
-				delete pField;
+				if ( e.GetType ( ) == Mouse::Event::Type::LPress ) {  //needed this conditional to insert pause
+					delete pField;
+					state = State::SelectionMenu;
+				}
 
-				state = State::SelectionMenu;
 
 			}
 		}
@@ -82,7 +84,7 @@ void Game::UpdateModel ( )
 
 			//const Mouse::Event e = wnd.mouse.Read ( );
 			//while ( e.GetType ( ) != Mouse::Event::Type::LPress ) { }
-			//trying to insert a delay here...
+			//trying to insert a delay here... SEE ABOVE
 
 			const SelectionMenu::Size s = menu.ProcessMouse ( e );
 

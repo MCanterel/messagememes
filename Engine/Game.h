@@ -34,6 +34,12 @@ private:
 		SelectionMenu,
 		Memesweeper
 	};
+	enum class Size
+	{
+		Small = 1,
+		Medium = 2,
+		Large = 3
+	};
 public:
 	Game( class MainWindow& wnd );
 	Game( const Game& ) = delete;
@@ -50,7 +56,7 @@ private:
 	Graphics gfx;
 	/********************************/
 	/*  User Variables              */
-	MemeField field;
+	MemeField* pField = nullptr;
 	SelectionMenu menu;
 	State state = State::SelectionMenu;
 	/********************************/

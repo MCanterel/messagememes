@@ -121,10 +121,14 @@ void MemeField::Tile::SetNeighborMemeCount( int memeCount )
 	nNeighborMemes = memeCount;
 }
 
-MemeField::MemeField( const Vei2& center,int nMemes )
+MemeField::MemeField( const Vei2& center,int nMemes, int fieldWidth, int fieldHeight )
 	:
-	topLeft( center - Vei2( width * SpriteCodex::tileSize,height * SpriteCodex::tileSize ) / 2 )
+	topLeft( center - Vei2( width * SpriteCodex::tileSize,height * SpriteCodex::tileSize ) / 2 ),
+	width(fieldWidth ),
+	height(fieldHeight )
+	
 {
+	pField = new Tile [ width * height ];
 	assert( nMemes > 0 && nMemes < width * height );
 	std::random_device rd;
 	std::mt19937 rng( rd() );
@@ -207,6 +211,17 @@ MemeField::State MemeField::GetState() const
 	return state;
 }
 
+int MemeField::GetWidth ( )
+{
+	return baseWidth;
+}
+
+int MemeField::GetHeight ( )
+{
+	return baseHeight;
+}
+
+
 void MemeField::RevealTile( const Vei2& gridPos )
 {
 	Tile& tile = TileAt( gridPos );
@@ -238,12 +253,12 @@ void MemeField::RevealTile( const Vei2& gridPos )
 
 MemeField::Tile& MemeField::TileAt( const Vei2& gridPos )
 {
-	return field[gridPos.y * width + gridPos.x];
+	return pField[gridPos.y * width + gridPos.x];
 }
 
 const MemeField::Tile& MemeField::TileAt( const Vei2 & gridPos ) const
 {
-	return field[gridPos.y * width + gridPos.x];
+	return pField[gridPos.y * width + gridPos.x];
 }
 
 Vei2 MemeField::ScreenToGrid( const Vei2& screenPos )
@@ -273,15 +288,28 @@ int MemeField::CountNeighborMemes( const Vei2 & gridPos )
 	return count;
 }
 
-bool MemeField::GameIsWon() const
-{
-	for( const Tile& t : field )
-	{
-		if( (t.HasMeme() && !t.IsFlagged()) ||
-			(!t.HasMeme() && !t.IsRevealed()) )
+bool MemeField::GameIsWon ( ) const {
+	for ( int i = 0; i < ( width * height ); i++ ) {
+		const Tile& t = pField [ i ];
+		if ( ( t.HasMeme ( ) && !t.IsFlagged ( ) ) ||
+			( !t.HasMeme ( ) && !t.IsRevealed ( ) ) )
 		{
 			return false;
 		}
 	}
 	return true;
 }
+
+
+//bool MemeField::GameIsWon2() const
+//{
+//	for( const Tile& t : pField )
+//	{
+//		if( (t.HasMeme() && !t.IsFlagged()) ||
+//			(!t.HasMeme() && !t.IsRevealed()) )
+//		{
+//			return false;
+//		}
+//	}
+//	return true;
+//}

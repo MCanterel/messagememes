@@ -1,5 +1,5 @@
-/****************************************************************************************** 
- *	Chili DirectX Framework Version 16.07.20											  *	
+/******************************************************************************************
+ *	Chili DirectX Framework Version 16.07.20											  *
  *	Game.cpp																			  *
  *	Copyright 2016 PlanetChili.net <http://www.planetchili.net>							  *
  *																						  *
@@ -22,76 +22,104 @@
 #include "Game.h"
 #include "SpriteCodex.h"
 
-Game::Game( MainWindow& wnd )
+Game::Game ( MainWindow& wnd )
 	:
-	wnd( wnd ),
-	gfx( wnd ),
-	menu( { gfx.GetRect().GetCenter().x,200 } ),
-	field( gfx.GetRect().GetCenter(),4 )
+	wnd ( wnd ),
+	gfx ( wnd ),
+	menu ( { gfx.GetRect ( ).GetCenter ( ).x,200 } )
+	// ,	field ( gfx.GetRect ( ).GetCenter ( ), 4 )  //old static field
 {
 }
 
-void Game::Go()
+
+
+void Game::Go ( )
 {
-	gfx.BeginFrame();	
-	UpdateModel();
-	ComposeFrame();
-	gfx.EndFrame();
+	gfx.BeginFrame ( );
+	UpdateModel ( );
+	ComposeFrame ( );
+	gfx.EndFrame ( );
 }
 
-void Game::UpdateModel()
+void Game::UpdateModel ( )
 {
-	while( !wnd.mouse.IsEmpty() )
+	while ( !wnd.mouse.IsEmpty ( ) )
 	{
-		const auto e = wnd.mouse.Read();
-		if( state == State::Memesweeper )
+		const auto e = wnd.mouse.Read ( );
+
+		if ( state == State::Memesweeper )
 		{
-			if( field.GetState() == MemeField::State::Memeing )
+			MemeField::State fState = pField->GetState ( );
+
+			if ( fState == MemeField::State::Memeing )
 			{
-				if( e.GetType() == Mouse::Event::Type::LPress )
+				if ( e.GetType ( ) == Mouse::Event::Type::LPress )
 				{
-					const Vei2 mousePos = e.GetPos();
-					if( field.GetRect().Contains( mousePos ) )
+					const Vei2 mousePos = e.GetPos ( );
+					if ( pField->GetRect ( ).Contains ( mousePos ) )
 					{
-						field.OnRevealClick( mousePos );
+						pField->OnRevealClick ( mousePos );
 					}
 				}
-				else if( e.GetType() == Mouse::Event::Type::RPress )
+				else if ( e.GetType ( ) == Mouse::Event::Type::RPress )
 				{
-					const Vei2 mousePos = e.GetPos();
-					if( field.GetRect().Contains( mousePos ) )
+					const Vei2 mousePos = e.GetPos ( );
+					if ( pField->GetRect ( ).Contains ( mousePos ) )
 					{
-						field.OnFlagClick( mousePos );
+						pField->OnFlagClick ( mousePos );
 					}
 				}
+			}
+			else if ( fState == MemeField::State::Fucked || fState == MemeField::State::Winrar ) {
+				delete pField;
+
+				state = State::SelectionMenu;
+
 			}
 		}
 		else
 		{
-			const SelectionMenu::Size s = menu.ProcessMouse( e );
-			switch( s )
+
+			//const Mouse::Event e = wnd.mouse.Read ( );
+			//while ( e.GetType ( ) != Mouse::Event::Type::LPress ) { }
+			//trying to insert a delay here...
+
+			const SelectionMenu::Size s = menu.ProcessMouse ( e );
+
+
+			switch ( s )
 			{
 			case SelectionMenu::Size::Small:
-			case SelectionMenu::Size::Medium:
-			case SelectionMenu::Size::Large:
+				pField = new MemeField ( gfx.GetRect ( ).GetCenter ( ), 4, (int)Size::Small * MemeField::GetWidth ( ), (int)Size::Small * MemeField::GetHeight ( ) );
 				state = State::Memesweeper;
+
+				break;
+			case SelectionMenu::Size::Medium:
+				pField = new MemeField ( gfx.GetRect ( ).GetCenter ( ), 4, (int)Size::Medium * MemeField::GetWidth ( ), (int)Size::Medium * MemeField::GetHeight ( ) );
+				state = State::Memesweeper;
+				break;
+			case SelectionMenu::Size::Large:
+				pField = new MemeField ( gfx.GetRect ( ).GetCenter ( ), 4, (int)Size::Large * MemeField::GetWidth ( ), (int)Size::Large * MemeField::GetHeight ( ) );
+				state = State::Memesweeper;
+				break;
+				//state = State::Memesweeper;
 			}
 		}
 	}
 }
 
-void Game::ComposeFrame()
+void Game::ComposeFrame ( )
 {
-	if( state == State::Memesweeper )
+	if ( state == State::Memesweeper )
 	{
-		field.Draw( gfx );
-		if( field.GetState() == MemeField::State::Winrar )
+		pField->Draw ( gfx );
+		if ( pField->GetState ( ) == MemeField::State::Winrar )
 		{
-			SpriteCodex::DrawWin( gfx.GetRect().GetCenter(),gfx );
+			SpriteCodex::DrawWin ( gfx.GetRect ( ).GetCenter ( ), gfx );
 		}
 	}
 	else
 	{
-		menu.Draw( gfx );
+		menu.Draw ( gfx );
 	}
 }

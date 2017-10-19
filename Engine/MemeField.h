@@ -48,6 +48,8 @@ public:
 	State GetState ( ) const;
 	static int GetWidth ( );
 	static int GetHeight ( );
+	static int GetMemeBaseNum ( );
+
 	//void SetSize ( );
 private:
 	void RevealTile ( const Vei2& gridPos );
@@ -59,6 +61,7 @@ private:
 private:
 	static constexpr int baseWidth = 4;
 	static constexpr int baseHeight = 3;
+	static constexpr int baseMemes = 4;
 	int width = baseWidth;
 	int height = baseHeight;
 	static constexpr int borderThickness = 10;

@@ -37,8 +37,8 @@ private:
 	enum class Size
 	{
 		Small = 1,
-		Medium = 2,
-		Large = 3
+		Medium = 3,
+		Large = 7
 	};
 public:
 	Game( class MainWindow& wnd );

@@ -221,6 +221,11 @@ int MemeField::GetHeight ( )
 	return baseHeight;
 }
 
+int MemeField::GetMemeBaseNum ( )
+{
+	return baseMemes;
+}
+
 
 void MemeField::RevealTile( const Vei2& gridPos )
 {

@@ -32,7 +32,6 @@ Game::Game ( MainWindow& wnd )
 }
 
 
-
 void Game::Go ( )
 {
 	gfx.BeginFrame ( );
@@ -70,42 +69,34 @@ void Game::UpdateModel ( )
 					}
 				}
 			}
-			else if ( fState == MemeField::State::Fucked || fState == MemeField::State::Winrar ) {
+			else  { //if ( fState == MemeField::State::Fucked || fState == MemeField::State::Winrar )
 				if ( e.GetType ( ) == Mouse::Event::Type::LPress ) {  //needed this conditional to insert pause
 					delete pField;
 					state = State::SelectionMenu;
 				}
-
-
 			}
 		}
 		else
 		{
-
-			//const Mouse::Event e = wnd.mouse.Read ( );
-			//while ( e.GetType ( ) != Mouse::Event::Type::LPress ) { }
-			//trying to insert a delay here... SEE ABOVE
-
 			const SelectionMenu::Size s = menu.ProcessMouse ( e );
-
-
 			switch ( s )
 			{
 			case SelectionMenu::Size::Small:
-				pField = new MemeField ( gfx.GetRect ( ).GetCenter ( ), 4, (int)Size::Small * MemeField::GetWidth ( ), (int)Size::Small * MemeField::GetHeight ( ) );
+				pField = new MemeField ( gfx.GetRect ( ).GetCenter ( ), (int)Size::Small * MemeField::GetMemeBaseNum ( ),	(int)Size::Small * MemeField::GetWidth ( ), (int)Size::Small * MemeField::GetHeight ( ) );
 				state = State::Memesweeper;
+				break;
 
-				break;
 			case SelectionMenu::Size::Medium:
-				pField = new MemeField ( gfx.GetRect ( ).GetCenter ( ), 4, (int)Size::Medium * MemeField::GetWidth ( ), (int)Size::Medium * MemeField::GetHeight ( ) );
+				pField = new MemeField ( gfx.GetRect ( ).GetCenter ( ), (int)Size::Medium * MemeField::GetMemeBaseNum ( ),	(int)Size::Medium * MemeField::GetWidth ( ), (int)Size::Medium * MemeField::GetHeight ( ) );
 				state = State::Memesweeper;
 				break;
+
 			case SelectionMenu::Size::Large:
-				pField = new MemeField ( gfx.GetRect ( ).GetCenter ( ), 4, (int)Size::Large * MemeField::GetWidth ( ), (int)Size::Large * MemeField::GetHeight ( ) );
+				pField = new MemeField ( gfx.GetRect ( ).GetCenter ( ), (int)Size::Large * MemeField::GetMemeBaseNum ( ),	(int)Size::Large * MemeField::GetWidth ( ), (int)Size::Large * MemeField::GetHeight ( ) );
 				state = State::Memesweeper;
-				break;
-				//state = State::Memesweeper;
+				break;	
 			}
+			//state = State::Memesweeper;
 		}
 	}
 }

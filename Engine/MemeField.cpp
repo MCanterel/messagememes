@@ -125,10 +125,11 @@ MemeField::MemeField( const Vei2& center,int nMemes, int fieldWidth, int fieldHe
 	:
 	topLeft( center - Vei2( width * SpriteCodex::tileSize,height * SpriteCodex::tileSize ) / 2 ),
 	width(fieldWidth ),
-	height(fieldHeight )
+	height(fieldHeight ),
+	pField(new Tile [ width * height ])
 	
 {
-	pField = new Tile [ width * height ];
+	//pField = new Tile [ width * height ];  //moved this into the initialization list
 	assert( nMemes > 0 && nMemes < width * height );
 	std::random_device rd;
 	std::mt19937 rng( rd() );
@@ -224,6 +225,12 @@ int MemeField::GetHeight ( )
 int MemeField::GetMemeBaseNum ( )
 {
 	return baseMemes;
+}
+
+void MemeField::FreeResources ( )
+{
+	delete [ ] pField;
+	pField = nullptr;
 }
 
 

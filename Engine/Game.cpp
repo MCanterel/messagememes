@@ -40,7 +40,7 @@ void Game::Go ( )
 	ComposeFrame ( );
 	gfx.EndFrame ( );
 }
-
+//```cpp
 void Game::UpdateModel ( )
 {
 	while ( !wnd.mouse.IsEmpty ( ) )
@@ -70,11 +70,9 @@ void Game::UpdateModel ( )
 					}
 				}
 			}
-			else  { //if ( fState == MemeField::State::Fucked || fState == MemeField::State::Winrar )
-				if ( e.GetType ( ) == Mouse::Event::Type::LPress ) {  //needed this conditional to insert pause
+			else  {
+				if ( e.GetType ( ) == Mouse::Event::Type::LPress ) {
 					DestroyField ( );
-					//delete pField;
-					pField = nullptr;
 					state = State::SelectionMenu;
 				}
 			}
@@ -82,34 +80,42 @@ void Game::UpdateModel ( )
 		else
 		{
 			const SelectionMenu::Size s = menu.ProcessMouse ( e );
+			int baseMemes = MemeField::GetMemeBaseNum ( );
+			int baseWidth = MemeField::GetWidth ( );
+			int baseHeight = MemeField::GetHeight ( );
+			
 			switch ( s )
 			{
 			case SelectionMenu::Size::Small:
-				CreateField ( (int)Size::Small * MemeField::GetMemeBaseNum ( ), (int)Size::Small * MemeField::GetWidth ( ), (int)Size::Small * MemeField::GetHeight ( ) );
+				CreateField ( (int)Size::Small * baseMemes, (int)Size::Small * baseWidth, (int)Size::Small * baseHeight );
+				state = State::Memesweeper;
 				break;
 
 			case SelectionMenu::Size::Medium:
-				CreateField ( (int)Size::Medium * MemeField::GetMemeBaseNum ( ), (int)Size::Medium * MemeField::GetWidth ( ), (int)Size::Medium * MemeField::GetHeight ( ) );
+				CreateField ( (int)Size::Medium * baseMemes, (int)Size::Medium * baseWidth, (int)Size::Medium * baseHeight );
+				state = State::Memesweeper;
 				break;
 
 			case SelectionMenu::Size::Large:
-				CreateField ( (int)Size::Large * MemeField::GetMemeBaseNum ( ), (int)Size::Large * MemeField::GetWidth ( ), (int)Size::Large * MemeField::GetHeight ( ) );
+				CreateField ( (int)Size::Large * baseMemes, (int)Size::Large * baseWidth, (int)Size::Large * baseHeight );
+				state = State::Memesweeper;
 				break;	
 			}
+			//state = State::Memesweeper;  //Doing this here instead of inside the switch cases creates a read access violation, saying pField is a nullptr! Why?
 		}
 	}
-}
+}//```
 
 void Game::CreateField ( int nMemes,int width, int height )
 {
 	assert ( pField == nullptr );
 	pField = new MemeField ( gfx.GetRect ( ).GetCenter ( ), nMemes, width, height );
-	state = State::Memesweeper;
-
+	//state = State::Memesweeper;  //Doing it here is fine. Why???
 }
 
 void Game::DestroyField ( )
 {
+	pField->FreeResources ( );
 	delete pField;
 	pField = nullptr;
 }

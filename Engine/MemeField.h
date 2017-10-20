@@ -49,6 +49,7 @@ public:
 	static int GetWidth ( );
 	static int GetHeight ( );
 	static int GetMemeBaseNum ( );
+	void FreeResources ( );
 
 	//void SetSize ( );
 private:
@@ -70,5 +71,5 @@ private:
 	Vei2 topLeft;
 	State state = State::Memeing;
 	Tile* pField = nullptr;
-	//Tile field [ width * height ];
+	//Tile field [ width * height ];  old static field
 };

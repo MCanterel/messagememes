@@ -101,7 +101,8 @@ void Game::UpdateModel ( )
 				state = State::Memesweeper;
 				break;	
 			}
-			//state = State::Memesweeper;  //Doing this here instead of inside the switch cases creates a read access violation, saying pField is a nullptr! Why?
+			//state = State::Memesweeper;  //Doing this here instead of inside the switch cases
+			//creates a read access violation, saying pField is a nullptr! Why?
 		}
 	}
 }//```

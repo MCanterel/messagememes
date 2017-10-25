@@ -3,6 +3,7 @@
 #include "Graphics.h"
 #include "Sound.h"
 #include <string>
+#include <vector>
 
 class MemeField
 {
@@ -44,10 +45,10 @@ private:
 	public:
 		Letter(const std::string& letter);
 		//Vei2* GetLetter(const std::string& letter);
-		static const int GetLetterGridCount();
-		Vei2 LetterGrid[12];
+		//static const int GetLetterGridCount();
+		std::vector <Vei2> LetterGrid;
 	private:
-		static constexpr int nLetterTiles = 12;
+		//static constexpr int nLetterTiles = 12;
 		//Vei2 LetterGrid[nLetterTiles];
 		//Vei2* pLetterGrid = LetterGrid;
 	};
@@ -76,7 +77,7 @@ private:
 private:
 	static constexpr int baseWidth = 4;
 	static constexpr int baseHeight = 3;
-	static constexpr int baseMemes = 2;
+	static constexpr int baseMemes = 1;
 	int width = baseWidth;
 	int height = baseHeight;
 	static constexpr int borderThickness = 10;
@@ -86,5 +87,7 @@ private:
 	State state = State::Memeing;
 	Tile* pField = nullptr;
 	Letter c;
+	Letter a;
+	Letter t;
 	//Tile field [ width * height ];  old static field
 };

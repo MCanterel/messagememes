@@ -142,7 +142,8 @@ MemeField::MemeField(const Vei2& center, int nMemes, int fieldWidth, int fieldHe
 
 	Vei2 letterSpawnPos = { std::min(width - 4, xDist(rng)),std::min(height - 5, yDist(rng)) };
 
-	for (int i = 0; i < Letter::GetLetterGridCount(); i++) {  //very bad implementation of large letter message meme here. Need to understand pointers to Vei2 arrays
+	for (int i = 0; i < Letter::GetLetterGridCount(); i++) {  //very bad implementation of large letter message meme here. 
+																//Need to understand pointers to Vei2 arrays OR USE VECTORS
 		Vei2 letterSegmentPos = letterSpawnPos + c.LetterGrid[i];
 		if (!(TileAt(letterSegmentPos).HasMeme())) {
 			TileAt(letterSegmentPos).SpawnMeme();

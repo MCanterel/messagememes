@@ -39,6 +39,7 @@ private:
 		bool hasMeme = false;
 		int nNeighborMemes = -1;
 	};
+
 	class Letter {
 	public:
 		Letter(const std::string& letter);

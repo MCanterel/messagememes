@@ -102,7 +102,8 @@ void Game::UpdateModel ( )
 				break;	
 			}
 			//state = State::Memesweeper;  //Doing this here instead of inside the switch cases
-			//creates a read access violation, saying pField is a nullptr! Why?
+			//creates a read access violation, saying pField is a nullptr! Why? Because on the first loop through, none of the cases
+			//are met, so CreateField doesn't get called, and yet the state has been changed to Memesweeper. Oops!
 		}
 	}
 }//```

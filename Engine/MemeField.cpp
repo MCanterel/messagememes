@@ -137,12 +137,16 @@ MemeField::MemeField(const Vei2& center, int nMemes, int fieldWidth, int fieldHe
 
 	std::random_device rd;
 	std::mt19937 rng(rd());
-	std::uniform_int_distribution<int> xDist(0, width - 1);
-	std::uniform_int_distribution<int> yDist(0, height - 1);
+	std::uniform_int_distribution<int> xDist(0, width - 15);
+	std::uniform_int_distribution<int> yDist(0, height - 5);
+	std::uniform_int_distribution<int> lxDist(6, 20);
+	std::uniform_int_distribution<int> lyDist(-2, 4);
 
 	//add message memes here
 
-	Vei2 letterSpawnPos1 = { std::min(width - 4, xDist(rng)),std::min(height - 5, yDist(rng)) };
+	Vei2 letterOffset = { std::min(6,lxDist(rng)), std::min(2, lyDist(rng)) };
+
+	Vei2 letterSpawnPos1 = { std::min(width - 15, xDist(rng)),std::min(height - 5, yDist(rng)) };
 	for (auto vec : c.LetterGrid) {    
 		Vei2 letterSegmentPos = letterSpawnPos1 + vec;
 		if (!(TileAt(letterSegmentPos).HasMeme())) {
@@ -150,14 +154,17 @@ MemeField::MemeField(const Vei2& center, int nMemes, int fieldWidth, int fieldHe
 		}
 	}
 
-	Vei2 letterSpawnPos2 = { std::min(width - 4, xDist(rng)),std::min(height - 5, yDist(rng)) };
+
+	Vei2 letterSpawnPos2 = letterSpawnPos1 + letterOffset;
+
 	for (auto vec : a.LetterGrid) {    
 		Vei2 letterSegmentPos = letterSpawnPos2 + vec;
 		if (!(TileAt(letterSegmentPos).HasMeme())) {
 			TileAt(letterSegmentPos).SpawnMeme();
 		}
 	}
-	Vei2 letterSpawnPos3 = { std::min(width - 4, xDist(rng)),std::min(height - 5, yDist(rng)) };
+	//Vei2 letterSpawnPos3 = { std::min(width - 4, xDist(rng)),std::min(height - 5, yDist(rng)) };
+	Vei2 letterSpawnPos3 = letterSpawnPos2 + letterOffset;
 	for (auto vec : t.LetterGrid) {    
 		Vei2 letterSegmentPos = letterSpawnPos3 + vec;
 		if (!(TileAt(letterSegmentPos).HasMeme())) {

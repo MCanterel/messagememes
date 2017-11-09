@@ -5,6 +5,7 @@
 #include <iostream>
 #include <bitset>
 #include <random>
+//xx
 
 class MemeMessage
 {

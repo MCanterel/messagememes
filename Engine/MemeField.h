@@ -4,6 +4,7 @@
 #include "Sound.h"
 #include <string>
 #include <vector>
+#include "MemeMessage.h"
 
 class MemeField
 {
@@ -41,18 +42,6 @@ private:
 		int nNeighborMemes = -1;
 	};
 
-	class Letter {
-	public:
-		Letter(const std::string& letter);
-		//Vei2* GetLetter(const std::string& letter);
-		//static const int GetLetterGridCount();
-		std::vector <Vei2> LetterGrid;
-	private:
-		//static constexpr int nLetterTiles = 12;
-		//Vei2 LetterGrid[nLetterTiles];
-		//Vei2* pLetterGrid = LetterGrid;
-	};
-
 public:
 	MemeField ( ) = default;
 	MemeField ( const Vei2& center, int nMemes, int fieldWidth, int fieldHeight );
@@ -66,7 +55,6 @@ public:
 	static int GetMemeBaseNum ( );
 	void FreeResources ( );
 
-	//void SetSize ( );
 private:
 	void RevealTile ( const Vei2& gridPos );
 	Tile& TileAt ( const Vei2& gridPos );
@@ -86,8 +74,5 @@ private:
 	Vei2 topLeft;
 	State state = State::Memeing;
 	Tile* pField = nullptr;
-	Letter c;
-	Letter a;
-	Letter t;
-	//Tile field [ width * height ];  old static field
+	MemeMessage* pMessage = nullptr;
 };

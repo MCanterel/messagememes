@@ -127,49 +127,27 @@ MemeField::MemeField(const Vei2& center, int nMemes, int fieldWidth, int fieldHe
 	width(fieldWidth),
 	height(fieldHeight),
 	pField(new Tile[width * height]),
-	c("C"),
-	a("A"),
-	t("T")
-
+	pMessage(new MemeMessage)
 {
-	//pField = new Tile [ width * height ];  //moved this into the initialization list
+
 	assert(nMemes > 0 && nMemes < width * height);
 
 	std::random_device rd;
 	std::mt19937 rng(rd());
-	std::uniform_int_distribution<int> xDist(0, width - 15);
-	std::uniform_int_distribution<int> yDist(0, height - 5);
-	std::uniform_int_distribution<int> lxDist(6, 20);
-	std::uniform_int_distribution<int> lyDist(-2, 4);
+	std::uniform_int_distribution<int> xDist(0, 3);
+	std::uniform_int_distribution<int> yDist(0, 3);
 
-	//add message memes here
+	//Vei2 messageSpawnPos = { xDist(rng), yDist(rng) };
+	Vei2 currentLetterSpawnPos = { xDist(rng), yDist(rng) };
 
-	Vei2 letterOffset = { std::min(6,lxDist(rng)), std::min(2, lyDist(rng)) };
-
-	Vei2 letterSpawnPos1 = { std::min(width - 15, xDist(rng)),std::min(height - 5, yDist(rng)) };
-	for (auto vec : c.LetterGrid) {    
-		Vei2 letterSegmentPos = letterSpawnPos1 + vec;
-		if (!(TileAt(letterSegmentPos).HasMeme())) {
-			TileAt(letterSegmentPos).SpawnMeme();
+	for (auto letter : pMessage->PhraseGrid) {
+		for (auto vec : letter->LetterGrid) {
+			Vei2 letterSegmentPos = currentLetterSpawnPos + vec;
+			if (!(TileAt(letterSegmentPos).HasMeme())) {
+				TileAt(letterSegmentPos).SpawnMeme();
+			}
 		}
-	}
-
-
-	Vei2 letterSpawnPos2 = letterSpawnPos1 + letterOffset;
-
-	for (auto vec : a.LetterGrid) {    
-		Vei2 letterSegmentPos = letterSpawnPos2 + vec;
-		if (!(TileAt(letterSegmentPos).HasMeme())) {
-			TileAt(letterSegmentPos).SpawnMeme();
-		}
-	}
-	//Vei2 letterSpawnPos3 = { std::min(width - 4, xDist(rng)),std::min(height - 5, yDist(rng)) };
-	Vei2 letterSpawnPos3 = letterSpawnPos2 + letterOffset;
-	for (auto vec : t.LetterGrid) {    
-		Vei2 letterSegmentPos = letterSpawnPos3 + vec;
-		if (!(TileAt(letterSegmentPos).HasMeme())) {
-			TileAt(letterSegmentPos).SpawnMeme();
-		}
+		currentLetterSpawnPos.x++;
 	}
 
 	for (int nSpawned = 0; nSpawned < nMemes; ++nSpawned)
@@ -266,6 +244,8 @@ void MemeField::FreeResources()
 {
 	delete[] pField;
 	pField = nullptr;
+	delete pMessage;
+	pMessage = nullptr;
 }
 
 void MemeField::RevealTile(const Vei2& gridPos)
@@ -345,44 +325,4 @@ bool MemeField::GameIsWon() const {
 	return true;
 }
 
-MemeField::Letter::Letter(const std::string & letter)
-{
-	LetterGrid.resize(15, { 0,0 });
-
-	if (letter == "C") {
-		LetterGrid[0] = { 0,0 };
-		LetterGrid[1] = { 1,0 };
-		LetterGrid[2] = { 2,0 };
-		LetterGrid[3] = { 0,1 };
-		LetterGrid[4] = { 0,2 };
-		LetterGrid[5] = { 0,3 };
-		LetterGrid[6] = { 0,4 };
-		LetterGrid[7] = { 1,4 };
-		LetterGrid[8] = { 2,4 };
-		LetterGrid[9] = { 3,4 };
-	}
-	if (letter == "A") {
-		LetterGrid[0] = { 0,0 };
-		LetterGrid[1] = { 1,0 };
-		LetterGrid[2] = { 2,0 };
-		LetterGrid[3] = { 0,1 };
-		LetterGrid[4] = { 2,1 };
-		LetterGrid[5] = { 0,2 };
-		LetterGrid[6] = { 1,2 };
-		LetterGrid[7] = { 2,2 };
-		LetterGrid[8] = { 0,3 };
-		LetterGrid[9] = { 2,3 };
-		LetterGrid[10] = { 0,4 };
-		LetterGrid[11] = { 2,4 };
-	}
-	if (letter == "T") {
-		LetterGrid[0] = { 0,0 };
-		LetterGrid[1] = { 1,0 };
-		LetterGrid[2] = { 2,0 };
-		LetterGrid[3] = { 1,1 };
-		LetterGrid[4] = { 1,2 };
-		LetterGrid[5] = { 1,3 };
-		LetterGrid[6] = { 1,4 };
-	}
-}
 

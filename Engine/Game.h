@@ -36,8 +36,8 @@ private:
 	};
 	enum class Size
 	{
-		Small = 2,
-		Medium = 5,
+		Small = 6,
+		Medium = 7,
 		Large = 8
 	};
 public:

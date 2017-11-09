@@ -40,7 +40,7 @@ void Game::Go ( )
 	ComposeFrame ( );
 	gfx.EndFrame ( );
 }
-//```cpp
+
 void Game::UpdateModel ( )
 {
 	while ( !wnd.mouse.IsEmpty ( ) )
@@ -106,13 +106,12 @@ void Game::UpdateModel ( )
 			//are met, so CreateField doesn't get called, and yet the state has been changed to Memesweeper. Oops!
 		}
 	}
-}//```
+}
 
 void Game::CreateField ( int nMemes,int width, int height )
 {
 	assert ( pField == nullptr );
 	pField = new MemeField ( gfx.GetRect ( ).GetCenter ( ), nMemes, width, height );
-	//state = State::Memesweeper;  //Doing it here is fine. Why???
 }
 
 void Game::DestroyField ( )

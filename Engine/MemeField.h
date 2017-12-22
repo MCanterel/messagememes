@@ -79,6 +79,7 @@ private:
 	static constexpr int baseWidth = 4;
 	static constexpr int baseHeight = 3;
 	static constexpr int baseMemes = 1;
+	int nMemes;
 	int width = baseWidth;
 	int height = baseHeight;
 	static constexpr int borderThickness = 10;

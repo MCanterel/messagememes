@@ -128,13 +128,13 @@ MemeField::MemeField(const Vei2& center, int nMemes, int fieldWidth, int fieldHe
 	width(fieldWidth),
 	height(fieldHeight),
 	pField(new Tile[width * height]),
+	nMemes(nMemes),  //this is a little roundabout- game.cpp gets the baseMemes from memefield, then, depending on game size, calls memefield here with nMemes. Need to fix.	
 	c("C"),
 	a("A"),
 	t("T"),
 	m(new MemeMessage)
 
 {
-	//pField = new Tile [ width * height ];  //moved this into the initialization list
 	assert(nMemes > 0 && nMemes < width * height);
 
 	std::random_device rd;
@@ -143,7 +143,7 @@ MemeField::MemeField(const Vei2& center, int nMemes, int fieldWidth, int fieldHe
 	std::uniform_int_distribution<int> yDist(0, height - 1);
 
 	//add message memes here
-
+	int s = m->PhraseGrid.size();
 	Vei2 letterSpawnPos1 = { std::min(width - 4, xDist(rng)),std::min(height - 5, yDist(rng)) };
 	for (auto vec : c.LetterGrid) {    
 		Vei2 letterSegmentPos = letterSpawnPos1 + vec;

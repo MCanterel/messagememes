@@ -3,7 +3,7 @@
 
 MemeMessage::MemeMessage()
 {
-	std::string phrase = getPhrase();
+	const std::string phrase = getPhrase();
 	buildMessage(phrase);
 }
 
@@ -11,16 +11,15 @@ MemeMessage::~MemeMessage()
 {
 }
 
-void MemeMessage::buildMessage(std::string phrase)
+void MemeMessage::buildMessage(const std::string phrase)
 {
-	size_t sz = phrase.size()-1;
-	for (int i = 0; i < sz; i++) {
+	for (size_t i = 0; i < phrase.size()-1; i++) {
 		MLetter* letter = new MLetter((const char&)phrase[i]);
-		PhraseGrid.emplace_back(letter);
+		PhraseGrid.push_back(letter);
 	}
 }
 
-std::string MemeMessage::getPhrase()
+const std::string MemeMessage::getPhrase() const
 {
 	std::vector <std::string> phraseList;
 	std::ifstream phraseFile("useful_phrases.txt");
@@ -33,12 +32,14 @@ std::string MemeMessage::getPhrase()
 			phraseList.emplace_back(line);
 		}
 	}
-
+	phraseFile.close();
 	std::random_device rd;
 	std::mt19937 rng(rd());
-	std::uniform_int_distribution<int> dist(0, (int)phraseList.size());
+	std::uniform_int_distribution<int> dist(0, (int)phraseList.size()-1);
 	std::string target = phraseList[dist(rng)];
-	target.resize(3);
+	target.resize(5);
+	//std::string target = phraseList[2];
+	
 	return target;
 }
 
@@ -82,17 +83,19 @@ MemeMessage::MLetter::MLetter(const char& ltr)
 	int lastLetterCol = 0;
 	for (int x = 0; x < 6; x++) {
 		for (int y = 0; y < 5; y++) {
-			if ((std::bitset<1>(letter >> 30 - (x * 5 + y))) == 1) {
+			int bitshift = 30 - (x * 5 + y);
+			if ((std::bitset<1>(letter >> bitshift)) == 1) {
 				lastLetterCol = x;
 			}
 		}
 	}
 	MLetter::LetterGrid.resize(lastLetterCol * 5, { 0,0 });
 
-	for (int x = 0; x < 6; x++) {
+	for (int x = 0; x < lastLetterCol; x++) {  //hallefrikkinlullah. I was looping through too many x's (5)...
 		for (int y = 0; y < 5; y++) {
-			if ((std::bitset<1>(letter >> 30 - (x * 5 + y))) == 1) {
-				LetterGrid[x * 5 + y].x = x;
+			int bitshift = 30 - (x * 5 + y);
+			if ((std::bitset<1>(letter >> bitshift)) == 1) {
+				LetterGrid[x * 5 + y].x = x;  
 				LetterGrid[x * 5 + y].y = y;
 			}
 		}

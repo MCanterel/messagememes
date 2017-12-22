@@ -26,8 +26,8 @@ public:
 	~MemeMessage();
 
 private:
-	void buildMessage(std::string phrase);
-	std::string getPhrase();
+	void buildMessage(const std::string phrase);
+	const std::string getPhrase() const;
 
 public:
 	std::vector <MLetter*> PhraseGrid;

@@ -4,6 +4,7 @@
 #include "Sound.h"
 #include <string>
 #include <vector>
+#include "MemeMessage.h"
 
 class MemeField
 {
@@ -89,5 +90,6 @@ private:
 	Letter c;
 	Letter a;
 	Letter t;
+	MemeMessage* m;
 	//Tile field [ width * height ];  old static field
 };

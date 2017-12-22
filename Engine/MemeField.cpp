@@ -5,6 +5,7 @@
 #include "SpriteCodex.h"
 #include <algorithm>
 
+
 void MemeField::Tile::SpawnMeme()
 {
 	assert(!hasMeme);
@@ -129,7 +130,8 @@ MemeField::MemeField(const Vei2& center, int nMemes, int fieldWidth, int fieldHe
 	pField(new Tile[width * height]),
 	c("C"),
 	a("A"),
-	t("T")
+	t("T"),
+	m(new MemeMessage)
 
 {
 	//pField = new Tile [ width * height ];  //moved this into the initialization list

@@ -1,0 +1,7 @@
+hop
+pri
+vis
+thr        
+abi
+jure
+

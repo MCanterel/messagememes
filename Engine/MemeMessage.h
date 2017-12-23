@@ -30,7 +30,7 @@ private:
 	const std::string getPhrase() const;
 
 private:
-	const int maxPhraseSize = 5;
+	const int maxPhraseSize = 4;
 	
 public:
 	std::vector <MLetter*> PhraseGrid;

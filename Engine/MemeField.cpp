@@ -129,9 +129,9 @@ MemeField::MemeField(const Vei2& center, int nMemes, int fieldWidth, int fieldHe
 	height(fieldHeight),
 	pField(new Tile[width * height]),
 	nMemes(nMemes),  //this is a little roundabout- game.cpp gets the baseMemes from memefield, then, depending on game size, calls memefield here with nMemes. Need to fix.	
-	c("C"),
-	a("A"),
-	t("T"),
+	//c("C"),
+	//a("A"),
+	//t("T"),
 	m(new MemeMessage)
 
 {
@@ -143,7 +143,24 @@ MemeField::MemeField(const Vei2& center, int nMemes, int fieldWidth, int fieldHe
 	std::uniform_int_distribution<int> yDist(0, height - 1);
 
 	//add message memes here
+	for (auto letter : m->PhraseGrid)
+	{
+		Vei2 letterSpawnPos = { memeXPos,std::min(height - 5, yDist(rng)) };
+		for (auto vec : letter->LetterGrid) {
+			Vei2 letterSegmentPos = letterSpawnPos + vec;
+			if (!(TileAt(letterSegmentPos).HasMeme())) {
+				TileAt(letterSegmentPos).SpawnMeme();
+			}
+		}
+		if (memeXPos <= (width - 10))
+		{
+			memeXPos += memeXSpacing;
+		}
+	}
+
+/*
 	int s = m->PhraseGrid.size();
+
 	Vei2 letterSpawnPos1 = { std::min(width - 4, xDist(rng)),std::min(height - 5, yDist(rng)) };
 	for (auto vec : c.LetterGrid) {    
 		Vei2 letterSegmentPos = letterSpawnPos1 + vec;
@@ -165,9 +182,9 @@ MemeField::MemeField(const Vei2& center, int nMemes, int fieldWidth, int fieldHe
 		if (!(TileAt(letterSegmentPos).HasMeme())) {
 			TileAt(letterSegmentPos).SpawnMeme();
 		}
-	}
+	}*/
 
-	for (int nSpawned = 0; nSpawned < nMemes; ++nSpawned)
+	/*for (int nSpawned = 0; nSpawned < nMemes; ++nSpawned)
 	{
 		Vei2 spawnPos;
 		do
@@ -176,7 +193,7 @@ MemeField::MemeField(const Vei2& center, int nMemes, int fieldWidth, int fieldHe
 		} while (TileAt(spawnPos).HasMeme());
 
 		TileAt(spawnPos).SpawnMeme();
-	}
+	}*/
 
 	for (Vei2 gridPos = { 0,0 }; gridPos.y < height; gridPos.y++)
 	{

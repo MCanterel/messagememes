@@ -40,72 +40,72 @@ void Game::Go ( )
 	ComposeFrame ( );
 	gfx.EndFrame ( );
 }
-//```cpp
-void Game::UpdateModel ( )
+
+void Game::UpdateModel()
 {
-	while ( !wnd.mouse.IsEmpty ( ) )
+	while (!wnd.mouse.IsEmpty())
 	{
-		const auto e = wnd.mouse.Read ( );
+		const auto e = wnd.mouse.Read();
 
-		if ( state == State::Memesweeper )
+		if (state == State::Memesweeper)
 		{
-			MemeField::State fState = pField->GetState ( );
+			MemeField::State fState = pField->GetState();
 
-			if ( fState == MemeField::State::Memeing )
+			if (fState == MemeField::State::Memeing)
 			{
-				if ( e.GetType ( ) == Mouse::Event::Type::LPress )
+				if (e.GetType() == Mouse::Event::Type::LPress)
 				{
-					const Vei2 mousePos = e.GetPos ( );
-					if ( pField->GetRect ( ).Contains ( mousePos ) )
+					const Vei2 mousePos = e.GetPos();
+					if (pField->GetRect().Contains(mousePos))
 					{
-						pField->OnRevealClick ( mousePos );
+						pField->OnRevealClick(mousePos);
 					}
 				}
-				else if ( e.GetType ( ) == Mouse::Event::Type::RPress )
+				else if (e.GetType() == Mouse::Event::Type::RPress)
 				{
-					const Vei2 mousePos = e.GetPos ( );
-					if ( pField->GetRect ( ).Contains ( mousePos ) )
+					const Vei2 mousePos = e.GetPos();
+					if (pField->GetRect().Contains(mousePos))
 					{
-						pField->OnFlagClick ( mousePos );
+						pField->OnFlagClick(mousePos);
 					}
 				}
 			}
-			else  {
-				if ( e.GetType ( ) == Mouse::Event::Type::LPress ) {
-					DestroyField ( );
+			else {
+				if (e.GetType() == Mouse::Event::Type::LPress) {
+					DestroyField();
 					state = State::SelectionMenu;
 				}
 			}
 		}
 		else
 		{
-			const SelectionMenu::Size s = menu.ProcessMouse ( e );
-			int baseMemes = MemeField::GetMemeBaseNum ( );
-			int baseWidth = MemeField::GetWidth ( );
-			int baseHeight = MemeField::GetHeight ( );
-			
-			switch ( s )
+			const SelectionMenu::Size s = menu.ProcessMouse(e);
+			int baseMemes = MemeField::GetMemeBaseNum();
+			int baseWidth = MemeField::GetWidth();
+			int baseHeight = MemeField::GetHeight();
+
+			switch (s)
 			{
 			case SelectionMenu::Size::Small:
-				CreateField ( (int)Size::Small * baseMemes, (int)Size::Small * baseWidth, (int)Size::Small * baseHeight );
+				CreateField((int)Size::Small * baseMemes, (int)Size::Small * baseWidth, (int)Size::Small * baseHeight);
 				state = State::Memesweeper;
 				break;
 
 			case SelectionMenu::Size::Medium:
-				CreateField ( (int)Size::Medium * baseMemes, (int)Size::Medium * baseWidth, (int)Size::Medium * baseHeight );
+				CreateField((int)Size::Medium * baseMemes, (int)Size::Medium * baseWidth, (int)Size::Medium * baseHeight);
 				state = State::Memesweeper;
 				break;
 
 			case SelectionMenu::Size::Large:
-				CreateField ( (int)Size::Large * baseMemes, (int)Size::Large * baseWidth, (int)Size::Large * baseHeight );
+				CreateField((int)Size::Large * baseMemes, (int)Size::Large * baseWidth, (int)Size::Large * baseHeight);
 				state = State::Memesweeper;
-				break;	
+				break;
 			}
-			//state = State::Memesweeper;  //Doing this here instead of inside the switch cases
-			//creates a read access violation, saying pField is a nullptr! Why?
+
 		}
 	}
-}//```
+}
+
 
 void Game::CreateField ( int nMemes,int width, int height )
 {

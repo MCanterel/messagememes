@@ -88,9 +88,11 @@ private:
 	Vei2 topLeft;
 	State state = State::Memeing;
 	Tile* pField = nullptr;
-	Letter c;
-	Letter a;
-	Letter t;
+	//Letter c;
+	//Letter a;
+	//Letter t;
 	MemeMessage* m;
+	int memeXPos = 1;
+	int memeXSpacing = 5;
 	//Tile field [ width * height ];  old static field
 };

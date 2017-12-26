@@ -42,17 +42,17 @@ private:
 		int nNeighborMemes = -1;
 	};
 
-	class Letter {
-	public:
-		Letter(const std::string& letter);
-		//Vei2* GetLetter(const std::string& letter);
-		//static const int GetLetterGridCount();
-		std::vector <Vei2> LetterGrid;
-	private:
-		//static constexpr int nLetterTiles = 12;
-		//Vei2 LetterGrid[nLetterTiles];
-		//Vei2* pLetterGrid = LetterGrid;
-	};
+	//class Letter {
+	//public:
+	//	Letter(const std::string& letter);
+	//	//Vei2* GetLetter(const std::string& letter);
+	//	//static const int GetLetterGridCount();
+	//	std::vector <Vei2> LetterGrid;
+	//private:
+	//	//static constexpr int nLetterTiles = 12;
+	//	//Vei2 LetterGrid[nLetterTiles];
+	//	//Vei2* pLetterGrid = LetterGrid;
+	//};
 
 public:
 	MemeField ( ) = default;
@@ -76,8 +76,8 @@ private:
 	int CountNeighborMemes ( const Vei2& gridPos );
 	bool GameIsWon ( ) const;
 private:
-	static constexpr int baseWidth = 4;
-	static constexpr int baseHeight = 3;
+	static constexpr int baseWidth = 8;
+	static constexpr int baseHeight = 4;
 	static constexpr int baseMemes = 1;
 	int nMemes;
 	int width = baseWidth;
@@ -92,7 +92,8 @@ private:
 	//Letter a;
 	//Letter t;
 	MemeMessage* m;
-	int memeXPos = 1;
-	int memeXSpacing = 5;
+	int memeXPos = 0;
+	int memeXSpacing = 6;
+	int memeYSpacing = 5;
 	//Tile field [ width * height ];  old static field
 };

@@ -1,4 +1,3 @@
-
 #pragma once
 #include <vector>
 #include "Vei2.h"
@@ -9,29 +8,58 @@
 
 class MemeMessage
 {
-private:
-	class MLetter {
-	public:
-		MLetter() = default;
-		MLetter(const char&);
-		std::vector <Vei2> LetterGrid;
-	private:
-		enum class LetterNums { A, B, C, D, E, F, G, H, I, J, K, L, M, N, O, P, Q, R, S, T, U, V, W, X, Y, Z, SPACE };
-		unsigned int letters[26];
-		unsigned int letter;
-	};
-
 public:
 	MemeMessage();
 	~MemeMessage();
-
+	class MLetter
+	{
+	public:
+		MLetter() = default;
+		MLetter(const char& ltr);
+		std::vector <Vei2> LetterGrid;
+		const int GetLetter()
+		{
+			return letter;
+		}
+	private:
+		enum class LetterNums { A, B, C, D, E, F, G, H, I, J, K, L, M, N, O, P, Q, R, S, T, U, V, W, X, Y, Z, SPACE };
+		unsigned int letters[27] =
+		{
+			0b011111010010100011110000000000,
+			0b111111010110101010100000000000,
+			0b011101000110001010100000000000,
+			0b111111000110001011100000000000,
+			0b111111010110101101010000000000,
+			0b111111010010100100000000000000,
+			0b011101000110101101011011000000,
+			0b111110010000100001001111100000,
+			0b100011111110001000000000000000,
+			0b100101000111111100000000000000,
+			0b111110010001010100010000000000,
+			0b111110000100001000010000000000,
+			0b111110100000100010001111100000,
+			0b111110100000100000101111100000,
+			0b011101000110001100010111000000,
+			0b111111010010100111000000000000,
+			0b011101000110001011110000100000,
+			0b111111010010110010010000000000,
+			0b111011010110101101110000000000,
+			0b100001000011111100001000000000,
+			0b111100000100001000011111000000,
+			0b111000001000001000101110000000,
+			0b111110001000100000101111100000,
+			0b100010101000100010101000100000,
+			0b100000100000111010001000000000,
+			0b100011001110101110011000100000,
+			0b000000000000000000000000000000
+		};
+		unsigned int letter;  //this is the final chosen letter
+	};
 private:
 	void buildMessage(const std::string phrase);
 	const std::string getPhrase() const;
-
 private:
-	const int maxPhraseSize = 4;
-	
+	const int maxPhraseSize = 8;
 public:
 	std::vector <MLetter*> PhraseGrid;
 };

@@ -138,10 +138,12 @@ MemeField::MemeField(const Vei2& center, int nMemes, int fieldWidth, int fieldHe
 	std::mt19937 rng(rd());
 	std::uniform_int_distribution<int> xDist(0, width - 1);
 	std::uniform_int_distribution<int> yDist(0, height - 1);
-	std::uniform_int_distribution<int> startYDist(1,2);
+	std::uniform_int_distribution<int> startDist(1,2);
+	std::uniform_int_distribution<int> shiftYDist(1, 5);
 
 	//add message memes here
-	int memeYPos = std::min(height - 5, yDist(rng));
+	memeXPos = startDist(rng);
+	memeYPos = std::min(rowBottom - 5, yDist(rng)/2);
 	for (auto letter : m->PhraseGrid)
 	{
 		Vei2 letterSpawnPos = { memeXPos,memeYPos };
@@ -152,24 +154,38 @@ MemeField::MemeField(const Vei2& center, int nMemes, int fieldWidth, int fieldHe
 				TileAt(letterSegmentPos).SpawnMeme();
 			}
 		}
-		if (startYDist(rng) == 1)
+		
+		if (memeYPos >= rowTop + 5 && memeYPos <= rowBottom - memeYSpacing*2)
 		{
-			memeYPos < memeYSpacing ? memeYPos = memeYSpacing :memeYPos -= memeYSpacing;
+			int moveY;
+			startDist(rng) == 1 ? moveY = memeYSpacing : moveY = -memeYSpacing;
+			memeYPos += moveY;
 		}
-		else
+		else if (memeYPos < rowTop + memeYSpacing)
 		{
-			memeYPos >= height - memeYSpacing ? memeYPos = height - memeYSpacing : memeYPos += memeYSpacing;
-			
+			memeYPos = std::min(rowTop, rowTop + shiftYDist(rng));
 		}
+		else if (memeYPos > rowBottom - memeYSpacing)
+		{
+			memeYPos = std::min(rowBottom - memeYSpacing, rowBottom - shiftYDist(rng));
+		}
+
 
 		if (memeXPos <= (width - 10))
 		{
 			memeXPos += memeXSpacing;
 		}
-		else break;
+		else
+		{
+			rowTop = rowBottom + 1;
+			rowBottom = height;
+			memeXPos = startDist(rng);
+			memeYPos = std::min(rowBottom - 5, height - (yDist(rng) / 2));
+
+		}
 	}
 
-	/*for (int nSpawned = 0; nSpawned < nMemes; ++nSpawned)
+	for (int nSpawned = 0; nSpawned < nMemes; ++nSpawned)
 	{
 		Vei2 spawnPos;
 		do
@@ -178,7 +194,7 @@ MemeField::MemeField(const Vei2& center, int nMemes, int fieldWidth, int fieldHe
 		} while (TileAt(spawnPos).HasMeme());
 
 		TileAt(spawnPos).SpawnMeme();
-	}*/
+	}
 
 	for (Vei2 gridPos = { 0,0 }; gridPos.y < height; gridPos.y++)
 	{

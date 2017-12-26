@@ -59,7 +59,7 @@ private:
 	void buildMessage(const std::string phrase);
 	const std::string getPhrase() const;
 private:
-	const int maxPhraseSize = 8;
+	const int maxPhraseSize = 20;
 public:
 	std::vector <MLetter*> PhraseGrid;
 };

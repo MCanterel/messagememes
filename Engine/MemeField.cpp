@@ -138,38 +138,39 @@ MemeField::MemeField(const Vei2& center, int nMemes, int fieldWidth, int fieldHe
 	std::mt19937 rng(rd());
 	std::uniform_int_distribution<int> xDist(0, width - 1);
 	std::uniform_int_distribution<int> yDist(0, height - 1);
-	std::uniform_int_distribution<int> startDist(1,2);
+	std::uniform_int_distribution<int> startDist(1, 2);
 	std::uniform_int_distribution<int> shiftYDist(1, 5);
 
 	//add message memes here
 	memeXPos = startDist(rng);
-	memeYPos = std::min(rowBottom - 5, yDist(rng)/2);
+	memeYPos = std::min(rowBottom - 5, yDist(rng) / 2);
 	for (auto letter : m->PhraseGrid)
 	{
 		Vei2 letterSpawnPos = { memeXPos,memeYPos };
-	
+
 		for (auto vec : letter->LetterGrid) {
 			Vei2 letterSegmentPos = letterSpawnPos + vec;
 			if (!(TileAt(letterSegmentPos).HasMeme())) {
 				TileAt(letterSegmentPos).SpawnMeme();
 			}
 		}
-		
-		if (memeYPos >= rowTop + 5 && memeYPos <= rowBottom - memeYSpacing*2)
+		//______________ YPos...
+		if (memeYPos < rowTop + memeYSpacing)
 		{
-			int moveY;
-			startDist(rng) == 1 ? moveY = memeYSpacing : moveY = -memeYSpacing;
-			memeYPos += moveY;
-		}
-		else if (memeYPos < rowTop + memeYSpacing)
-		{
-			memeYPos = std::min(rowTop, rowTop + shiftYDist(rng));
+			memeYPos = std::max (rowTop, rowTop + shiftYDist(rng));
 		}
 		else if (memeYPos > rowBottom - memeYSpacing)
 		{
 			memeYPos = std::min(rowBottom - memeYSpacing, rowBottom - shiftYDist(rng));
 		}
-
+		else  //if (memeYPos >= rowTop + 5 && memeYPos <= rowBottom - memeYSpacing*2)
+		{
+			int moveY;
+			startDist(rng) == 1 ? moveY = memeYSpacing : moveY = -memeYSpacing;
+			memeYPos += moveY;
+		}
+		
+		//______________ XPos...
 
 		if (memeXPos <= (width - 10))
 		{

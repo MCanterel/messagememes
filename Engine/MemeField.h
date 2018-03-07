@@ -27,6 +27,7 @@ private:
 			Revealed
 		};
 	public:
+		Tile() = default;
 		void SpawnMeme ( );
 		void SpawnLetterMeme();
 		bool HasMeme ( ) const;

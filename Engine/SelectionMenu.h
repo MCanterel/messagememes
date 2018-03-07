@@ -104,7 +104,7 @@ public:
 					{
 						ResetHighlights();
 						n.SetHighlight();
-						hover.Play();
+						hover.Play(1.0, 0.1f);
 					}
 					// immediately exit if found a hit
 					// (if we don't, highlight will be reset below)

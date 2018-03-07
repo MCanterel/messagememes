@@ -159,15 +159,14 @@ MemeField::MemeField(const Vei2& center, int nMemes, int fieldWidth, int fieldHe
 	memeXPos = startDist(rng);
 	memeYPos = std::min(rowBottom - 5, yDist(rng) / 2);
 	m->PhraseGrid.resize(m->PhraseGrid.size() - 1);
-
+	
 	for (auto letter : m->PhraseGrid)
 	{
 		Vei2 letterSpawnPos = { memeXPos,memeYPos };
-
 		for (auto vec : letter->LetterGrid) {
 			Vei2 letterSegmentPos = letterSpawnPos + vec;
 			MemeField::Tile& curTile = TileAt(letterSegmentPos);
-
+			//need a check here to make sure it's within the memefield dims
 			if (!(curTile.HasMeme())) {
 				curTile.SpawnLetterMeme();
 			}
@@ -311,7 +310,7 @@ void MemeField::RevealTile(const Vei2& gridPos)
 		if (tile.HasMeme())
 		{
 			state = State::Fucked;
-			sndLose.Play();
+			sndLose.Play(1, 0.3);
 		}
 		else if (tile.HasNoNeighborMemes())
 		{
@@ -333,11 +332,13 @@ void MemeField::RevealTile(const Vei2& gridPos)
 
 MemeField::Tile& MemeField::TileAt(const Vei2& gridPos)
 {
+	//need assert here to check gridPos isn't past memefield bounds
 	return pField[gridPos.y * width + gridPos.x];
 }
 
 const MemeField::Tile& MemeField::TileAt(const Vei2 & gridPos) const
 {
+	//need assert here to check gridPos isn't past memefield bounds
 	return pField[gridPos.y * width + gridPos.x];
 }
 

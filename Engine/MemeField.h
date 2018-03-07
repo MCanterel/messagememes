@@ -28,6 +28,7 @@ private:
 		};
 	public:
 		void SpawnMeme ( );
+		void SpawnLetterMeme();
 		bool HasMeme ( ) const;
 		void Draw ( const Vei2& screenPos, MemeField::State fucked, Graphics& gfx ) const;
 		void Reveal ( );
@@ -39,20 +40,9 @@ private:
 	private:
 		State state = State::Hidden;
 		bool hasMeme = false;
+		bool isLetter = false;
 		int nNeighborMemes = -1;
 	};
-
-	//class Letter {
-	//public:
-	//	Letter(const std::string& letter);
-	//	//Vei2* GetLetter(const std::string& letter);
-	//	//static const int GetLetterGridCount();
-	//	std::vector <Vei2> LetterGrid;
-	//private:
-	//	//static constexpr int nLetterTiles = 12;
-	//	//Vei2 LetterGrid[nLetterTiles];
-	//	//Vei2* pLetterGrid = LetterGrid;
-	//};
 
 public:
 	MemeField ( ) = default;
@@ -88,14 +78,12 @@ private:
 	Vei2 topLeft;
 	State state = State::Memeing;
 	Tile* pField = nullptr;
-	//Letter c;
-	//Letter a;
-	//Letter t;
-	MemeMessage* m;
+
+	MemeMessage* m = nullptr;
 	int memeXPos = 0;
 	int memeYPos = 0;
 	int memeXSpacing = 6;
-	int memeYSpacing = 6;
+	int memeYSpacing = 3;
 	int rowTop = 0;
 	int rowBottom = height / 2;
 	//Tile field [ width * height ];  old static field

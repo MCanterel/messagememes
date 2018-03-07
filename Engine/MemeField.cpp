@@ -11,6 +11,12 @@ void MemeField::Tile::SpawnMeme()
 	assert(!hasMeme);
 	hasMeme = true;
 }
+void MemeField::Tile::SpawnLetterMeme()
+{
+	assert(!hasMeme);
+	hasMeme = true;
+	isLetter = true;
+}
 
 bool MemeField::Tile::HasMeme() const
 {
@@ -49,7 +55,15 @@ void MemeField::Tile::Draw(const Vei2& screenPos, MemeField::State fieldState, G
 		case State::Hidden:
 			if (HasMeme())
 			{
-				SpriteCodex::DrawTileBomb(screenPos, gfx);
+				if (!isLetter)
+				{
+					SpriteCodex::DrawTileBomb(screenPos, gfx);
+				}
+				else
+				{
+					SpriteCodex::DrawTileBombRed(screenPos, gfx);
+				}
+
 			}
 			else
 			{
@@ -144,24 +158,28 @@ MemeField::MemeField(const Vei2& center, int nMemes, int fieldWidth, int fieldHe
 	//add message memes here
 	memeXPos = startDist(rng);
 	memeYPos = std::min(rowBottom - 5, yDist(rng) / 2);
+	m->PhraseGrid.resize(m->PhraseGrid.size() - 1);
+
 	for (auto letter : m->PhraseGrid)
 	{
 		Vei2 letterSpawnPos = { memeXPos,memeYPos };
 
 		for (auto vec : letter->LetterGrid) {
 			Vei2 letterSegmentPos = letterSpawnPos + vec;
-			if (!(TileAt(letterSegmentPos).HasMeme())) {
-				TileAt(letterSegmentPos).SpawnMeme();
+			MemeField::Tile& curTile = TileAt(letterSegmentPos);
+
+			if (!(curTile.HasMeme())) {
+				curTile.SpawnLetterMeme();
 			}
 		}
 		//______________ YPos...
 		if (memeYPos < rowTop + memeYSpacing)
 		{
-			memeYPos = std::max (rowTop, rowTop + shiftYDist(rng));
+			memeYPos = std::max(rowTop, rowTop + shiftYDist(rng));
 		}
 		else if (memeYPos > rowBottom - memeYSpacing)
 		{
-			memeYPos = std::min(rowBottom - memeYSpacing, rowBottom - shiftYDist(rng));
+			memeYPos = std::max(rowBottom - memeYSpacing, rowBottom - shiftYDist(rng));
 		}
 		else  //if (memeYPos >= rowTop + 5 && memeYPos <= rowBottom - memeYSpacing*2)
 		{
@@ -169,7 +187,7 @@ MemeField::MemeField(const Vei2& center, int nMemes, int fieldWidth, int fieldHe
 			startDist(rng) == 1 ? moveY = memeYSpacing : moveY = -memeYSpacing;
 			memeYPos += moveY;
 		}
-		
+
 		//______________ XPos...
 
 		if (memeXPos <= (width - 10))
@@ -185,6 +203,8 @@ MemeField::MemeField(const Vei2& center, int nMemes, int fieldWidth, int fieldHe
 
 		}
 	}
+
+	//add various extra memes per nMemes amount
 
 	for (int nSpawned = 0; nSpawned < nMemes; ++nSpawned)
 	{

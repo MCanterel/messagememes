@@ -22,6 +22,7 @@ void MemeMessage::buildMessage(const std::string phrase)
 	for (size_t i = 0; i < phrase.size(); i++) {
 		MLetter* letter = new MLetter((const char&)phrase[i]);
 		PhraseGrid.push_back(letter);
+		//PhraseGrid.push_back(std::move(letter));
 	}
 }
 
@@ -43,7 +44,7 @@ const std::string MemeMessage::getPhrase() const
 	std::mt19937 rng(rd());
 	std::uniform_int_distribution<int> dist(0, (int)phraseList.size() - 1);
 	std::string target = phraseList[dist(rng)];
-	target.resize(maxPhraseSize);
+	//target.resize(maxPhraseSize);
 	return target;
 }
 

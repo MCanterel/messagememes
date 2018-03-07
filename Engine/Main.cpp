@@ -18,9 +18,23 @@
 *	You should have received a copy of the GNU General Public License					  *
 *	along with The Chili DirectX Framework.  If not, see <http://www.gnu.org/licenses/>.  *
 ******************************************************************************************/
+
 #include "MainWindow.h"
 #include "Game.h"
 #include "ChiliException.h"
+
+//#define _CRTDBG_MAP_ALLOC 
+//#include <stdlib.h> 
+//#include <crtdbg.h> 
+//
+//#ifdef _DEBUG
+//#ifndef DBG_NEW
+//#define DBG_NEW new ( _NORMAL_BLOCK , __FILE__ , __LINE__ )
+//#define new DBG_NEW
+//#endif  //DBG_NEW
+//#endif  // _DEBUG
+
+
 
 int WINAPI wWinMain( HINSTANCE hInst,HINSTANCE,LPWSTR pArgs,INT )
 {
@@ -74,6 +88,8 @@ int WINAPI wWinMain( HINSTANCE hInst,HINSTANCE,LPWSTR pArgs,INT )
 		MessageBox( nullptr,L"\n\nException caught at main window creation.",
 			L"Unhandled Non-STL Exception",MB_OK );
 	}
+
+	//_CrtDumpMemoryLeaks();
 
 	return 0;
 }

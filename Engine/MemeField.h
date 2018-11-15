@@ -69,7 +69,7 @@ private:
 private:
 	static constexpr int baseWidth = 10;
 	static constexpr int baseHeight = 4;
-	static constexpr int baseMemes = 20;
+	static constexpr int baseMemes = 1;
 	int nMemes;
 	int width = baseWidth;
 	int height = baseHeight;
@@ -84,7 +84,7 @@ private:
 	int memeXPos = 0;
 	int memeYPos = 0;
 	int memeXSpacing = 6;
-	int memeYSpacing = 3;
+	int memeYSpacing = 2;
 	int rowTop = 0;
 	int rowBottom = height / 2;
 	//Tile field [ width * height ];  old static field

@@ -153,7 +153,7 @@ MemeField::MemeField(const Vei2& center, int nMemes, int fieldWidth, int fieldHe
 	std::uniform_int_distribution<int> xDist(0, width - 1);
 	std::uniform_int_distribution<int> yDist(0, height - 1);
 	std::uniform_int_distribution<int> startDist(1, 2);
-	std::uniform_int_distribution<int> shiftYDist(1, 5);
+	std::uniform_int_distribution<int> shiftYDist(0, 1);
 
 	//add message memes here
 	memeXPos = startDist(rng);

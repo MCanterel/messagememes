@@ -28,23 +28,22 @@ private:
 		};
 	public:
 		Tile() = default;
-		void SpawnMeme ( );
+		void SpawnMeme();
 		void SpawnLetterMeme();
-		bool HasMeme ( ) const;
-		void Draw ( const Vei2& screenPos, MemeField::State fucked, Graphics& gfx ) const;
-		void Reveal ( );
-		bool IsRevealed ( ) const;
-		void ToggleFlag ( );
-		bool IsFlagged ( ) const;
-		bool HasNoNeighborMemes ( ) const;
-		void SetNeighborMemeCount ( int memeCount );
+		bool HasMeme() const;
+		void Draw(const Vei2& screenPos, MemeField::State fucked, Graphics& gfx) const;
+		void Reveal();
+		bool IsRevealed() const;
+		void ToggleFlag();
+		bool IsFlagged() const;
+		bool HasNoNeighborMemes() const;
+		void SetNeighborMemeCount(int memeCount);
 	private:
 		State state = State::Hidden;
 		bool hasMeme = false;
 		bool isLetter = false;
 		int nNeighborMemes = -1;
 	};
-
 public:
 	MemeField ( ) = default;
 	MemeField ( const Vei2& center, int nMemes, int fieldWidth, int fieldHeight );
@@ -57,8 +56,6 @@ public:
 	static int GetHeight ( );
 	static int GetMemeBaseNum ( );
 	void FreeResources ( );
-
-	//void SetSize ( );
 private:
 	void RevealTile ( const Vei2& gridPos );
 	Tile& TileAt ( const Vei2& gridPos );
@@ -79,7 +76,6 @@ private:
 	Vei2 topLeft;
 	State state = State::Memeing;
 	Tile* pField = nullptr;
-
 	MemeMessage* m = nullptr;
 	int memeXPos = 0;
 	int memeYPos = 0;
@@ -87,5 +83,4 @@ private:
 	int memeYSpacing = 2;
 	int rowTop = 0;
 	int rowBottom = height / 2;
-	//Tile field [ width * height ];  old static field
 };

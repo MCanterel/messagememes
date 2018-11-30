@@ -204,7 +204,6 @@ MemeField::MemeField(const Vei2& center, int nMemes, int fieldWidth, int fieldHe
 	}
 
 	//add various extra memes per nMemes amount
-
 	for (int nSpawned = 0; nSpawned < nMemes; ++nSpawned)
 	{
 		Vei2 spawnPos;

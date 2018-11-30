@@ -5,6 +5,7 @@
 #include <string>
 #include <vector>
 #include "MemeMessage.h"
+#include <memory>
 
 class MemeField
 {
@@ -55,7 +56,6 @@ public:
 	static int GetWidth ( );
 	static int GetHeight ( );
 	static int GetMemeBaseNum ( );
-	void FreeResources ( );
 private:
 	void RevealTile ( const Vei2& gridPos );
 	Tile& TileAt ( const Vei2& gridPos );
@@ -75,8 +75,8 @@ private:
 	Sound sndLose = Sound ( L"spayed.wav" );
 	Vei2 topLeft;
 	State state = State::Memeing;
-	Tile* pField = nullptr;
-	MemeMessage* m = nullptr;
+	std::unique_ptr<Tile[]> pTileField;
+	std::unique_ptr<MemeMessage> message;
 	int memeXPos = 0;
 	int memeYPos = 0;
 	int memeXSpacing = 6;

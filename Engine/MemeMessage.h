@@ -11,6 +11,7 @@ class MemeMessage
 public:
 	MemeMessage();
 	~MemeMessage();
+	MemeMessage(const MemeMessage&) = delete;
 	class MLetter
 	{
 	public:
@@ -23,7 +24,7 @@ public:
 		}
 	private:
 		enum class LetterNums { A, B, C, D, E, F, G, H, I, J, K, L, M, N, O, P, Q, R, S, T, U, V, W, X, Y, Z, SPACE };
-		unsigned int letters[27] =
+		int letters[27] =
 		{
 			0b011111010010100011110000000000,
 			0b111111010110101010100000000000,
@@ -53,7 +54,7 @@ public:
 			0b100011001110101110011000100000,
 			0b000000000000000000000000000000
 		};
-		unsigned int letter;  //this is the final chosen letter
+		int letter;  //this is the final chosen letter
 	};
 private:
 	void buildMessage(const std::string phrase);

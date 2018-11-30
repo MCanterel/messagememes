@@ -141,13 +141,11 @@ MemeField::MemeField(const Vei2& center, int nMemes, int fieldWidth, int fieldHe
 	topLeft(center - Vei2(width * SpriteCodex::tileSize, height * SpriteCodex::tileSize) / 2),
 	width(fieldWidth),
 	height(fieldHeight),
-	pField(new Tile[width * height]),
+	pTileField(std::make_unique<Tile[]>(width * height)),
 	nMemes(nMemes),  //this is a little roundabout- game.cpp gets the baseMemes from memefield, then, depending on game size, calls memefield here with nMemes. Need to fix.	
-	m(new MemeMessage)
-
+	message(std::make_unique<MemeMessage>())
 {
 	assert(nMemes > 0 && nMemes < width * height);
-
 	std::random_device rd;
 	std::mt19937 rng(rd());
 	std::uniform_int_distribution<int> xDist(0, width - 1);
@@ -158,9 +156,9 @@ MemeField::MemeField(const Vei2& center, int nMemes, int fieldWidth, int fieldHe
 	//add message memes here
 	memeXPos = startDist(rng);
 	memeYPos = std::min(rowBottom - 5, yDist(rng) / 2);
-	m->PhraseGrid.resize(m->PhraseGrid.size() - 1);
+	message->PhraseGrid.resize(message->PhraseGrid.size() - 1);
 	
-	for (auto letter : m->PhraseGrid)
+	for (auto letter : message->PhraseGrid)
 	{
 		Vei2 letterSpawnPos = { memeXPos,memeYPos };
 		for (auto vec : letter->LetterGrid) {
@@ -199,7 +197,6 @@ MemeField::MemeField(const Vei2& center, int nMemes, int fieldWidth, int fieldHe
 			rowBottom = height;
 			memeXPos = startDist(rng);
 			memeYPos = std::min(rowBottom - 5, height - (yDist(rng) / 2));
-
 		}
 	}
 
@@ -293,13 +290,6 @@ int MemeField::GetMemeBaseNum()
 {
 	return baseMemes;
 }
-
-void MemeField::FreeResources()
-{
-	delete[] pField;
-	pField = nullptr;
-}
-
 void MemeField::RevealTile(const Vei2& gridPos)
 {
 	Tile& tile = TileAt(gridPos);
@@ -332,13 +322,13 @@ void MemeField::RevealTile(const Vei2& gridPos)
 MemeField::Tile& MemeField::TileAt(const Vei2& gridPos)
 {
 	//need assert here to check gridPos isn't past memefield bounds
-	return pField[gridPos.y * width + gridPos.x];
+	return pTileField[gridPos.y * width + gridPos.x];
 }
 
 const MemeField::Tile& MemeField::TileAt(const Vei2 & gridPos) const
 {
 	//need assert here to check gridPos isn't past memefield bounds
-	return pField[gridPos.y * width + gridPos.x];
+	return pTileField[gridPos.y * width + gridPos.x];
 }
 
 Vei2 MemeField::ScreenToGrid(const Vei2& screenPos)
@@ -369,7 +359,7 @@ int MemeField::CountNeighborMemes(const Vei2 & gridPos)
 
 bool MemeField::GameIsWon() const {
 	for (int i = 0; i < (width * height); i++) {
-		const Tile& t = pField[i];
+		const Tile& t = pTileField[i];
 		if ((t.HasMeme() && !t.IsFlagged()) ||
 			(!t.HasMeme() && !t.IsRevealed()))
 		{

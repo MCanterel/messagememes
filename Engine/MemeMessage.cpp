@@ -7,8 +7,7 @@ MemeMessage::MemeMessage()
 	buildMessage(phrase);
 }
 
-MemeMessage::~MemeMessage()
-{
+MemeMessage::~MemeMessage() {
 	for (MLetter* l : PhraseGrid)
 	{
 		delete l;

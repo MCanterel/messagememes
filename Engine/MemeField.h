@@ -66,7 +66,7 @@ private:
 private:
 	static constexpr int baseWidth = 10;
 	static constexpr int baseHeight = 4;
-	static constexpr int baseMemes = 1;
+	static constexpr int baseMemes = 0;
 	int nMemes;
 	int width = baseWidth;
 	int height = baseHeight;

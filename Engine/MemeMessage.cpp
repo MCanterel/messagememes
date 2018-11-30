@@ -17,7 +17,6 @@ MemeMessage::~MemeMessage() {
 
 void MemeMessage::buildMessage(const std::string phrase)
 {
-	size_t lll = phrase.size();
 	for (size_t i = 0; i < phrase.size(); i++) {
 		MLetter* letter = new MLetter((const char&)phrase[i]);
 		PhraseGrid.push_back(letter);

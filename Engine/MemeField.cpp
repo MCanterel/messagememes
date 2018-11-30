@@ -145,7 +145,7 @@ MemeField::MemeField(const Vei2& center, int nMemes, int fieldWidth, int fieldHe
 	nMemes(nMemes),  //this is a little roundabout- game.cpp gets the baseMemes from memefield, then, depending on game size, calls memefield here with nMemes. Need to fix.	
 	message(std::make_unique<MemeMessage>())
 {
-	assert(nMemes > 0 && nMemes < width * height);
+	assert(nMemes >= 0 && nMemes < width * height);
 	std::random_device rd;
 	std::mt19937 rng(rd());
 	std::uniform_int_distribution<int> xDist(0, width - 1);
@@ -162,11 +162,14 @@ MemeField::MemeField(const Vei2& center, int nMemes, int fieldWidth, int fieldHe
 	{
 		Vei2 letterSpawnPos = { memeXPos,memeYPos };
 		for (auto vec : letter->LetterGrid) {
-			Vei2 letterSegmentPos = letterSpawnPos + vec;
+			Vei2 letterSegmentPos = letterSpawnPos + vec; 
+			//here's where the trouble is: if vec = {0,0}
+			//then the meme will be spawned at the top left corner
+			//need to implement a check 
 			MemeField::Tile& curTile = TileAt(letterSegmentPos);
 			//need a check here to make sure it's within the memefield dims
 			if (!(curTile.HasMeme())) {
-				curTile.SpawnLetterMeme();
+				curTile.SpawnLetterMeme();  
 			}
 		}
 		//______________ YPos...

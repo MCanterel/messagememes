@@ -27,7 +27,7 @@ void MemeMessage::buildMessage(const std::string phrase)
 const std::string MemeMessage::getPhrase() const
 {
 	std::vector <std::string> phraseList;
-	std::ifstream phraseFile("useful_phrases.txt");
+	std::ifstream phraseFile("meme_list.txt");
 
 	for (std::string line; std::getline(phraseFile, line);) {
 		if (line.empty()) {
@@ -42,33 +42,41 @@ const std::string MemeMessage::getPhrase() const
 	std::mt19937 rng(rd());
 	std::uniform_int_distribution<int> dist(0, (int)phraseList.size() - 1);
 	std::string target = phraseList[dist(rng)];
-	//target.resize(maxPhraseSize);
+	target.resize(std::min<size_t>(target.size(),maxPhraseSize));
 	return target;
 }
 
 MemeMessage::MLetter::MLetter(const char& ltr)  
 //fix this by addressing bitset via [] operator
-//simplify and don't include vei2 {0,0} if it isn't there!
 {
 	if (ltr == ' ') {
 		letter = letters[(char)LetterNums::SPACE];
+		SetLetterWidth((int)LetterSpace::Narrow);
 	}
 	else {
 		letter = letters[ltr - 'a'];
-	}
-
-	int lastLetterCol = 0;
-	for (int x = 0; x < 6; x++) {
-		for (int y = 0; y < 5; y++) {
-			int bitshift = 30 - (x * 5 + y);
-			if ((std::bitset<1>(letter >> bitshift)) == 1) {
-				lastLetterCol = x;
-			}
+		if (IsWideLetter(ltr))
+		{
+			SetLetterWidth((int)LetterSpace::Wide);
+		}
+		else
+		{
+			SetLetterWidth((int)LetterSpace::Medium);
 		}
 	}
-	MLetter::LetterGrid.resize((lastLetterCol+1) * 5, { 0,0 });
-
-	for (int x = 0; x <= lastLetterCol; x++) {  //hallefrikkinlullah. I was looping through too many x's (5)...
+	//int lastLetterCol = 0;  //i can probs refactor this to just use the letterWidth value later
+	//for (int x = 0; x < 6; x++) {
+	//	for (int y = 0; y < 5; y++) {
+	//		int bitshift = 30 - (x * 5 + y);
+	//		if ((std::bitset<1>(letter >> bitshift)) == 1) {
+	//			lastLetterCol = x;
+	//		}
+	//	}
+	//}
+	int lastLetterCol = letterWidth - 1;  //haha that wuz easy
+	MLetter::LetterGrid.resize(letterWidth * 5, { -1,-1 });
+	
+	for (int x = 0; x <= lastLetterCol; x++) {  //IK this is little weird, but it works so not refactoring now
 		for (int y = 0; y < 5; y++) {
 			int bitshift = 29 - (x * 5 + y);
 			auto testBit = (std::bitset<1>(letter >> bitshift));

@@ -5,6 +5,7 @@
 #include <iostream>
 #include <bitset>
 #include <random>
+#include <algorithm>
 
 class MemeMessage
 {
@@ -22,8 +23,25 @@ public:
 		{
 			return letter;
 		}
+		const int GetLetterWidth()
+		{
+			return letterWidth;
+		}
+		void SetLetterWidth(int size)
+		{
+			letterWidth = size;
+		}
+		bool IsWideLetter(const char& c)
+		{
+			return (std::count(WideLetters.begin(), WideLetters.end(), c) > 0);
+		}
 	private:
 		enum class LetterNums { A, B, C, D, E, F, G, H, I, J, K, L, M, N, O, P, Q, R, S, T, U, V, W, X, Y, Z, SPACE };
+		enum class LetterSpace {
+			Narrow = 4,
+			Medium = 5,
+			Wide = 6
+		};
 		int letters[27] =
 		{
 			0b011111010010100011110000000000,
@@ -55,8 +73,10 @@ public:
 			0b000000000000000000000000000000
 		};
 		int letter;  //this is the final chosen letter
+		int letterWidth;
+		const std::vector <char> WideLetters { 'g', 'h' ,'m', 'n', 'o', 'q', 't', 'u', 'v', 'w', 'x', 'y', 'z' };
 	};
-	const int maxPhraseSize = 8;
+	const int maxPhraseSize = 13;
 private:
 	void buildMessage(const std::string phrase);
 	const std::string getPhrase() const;

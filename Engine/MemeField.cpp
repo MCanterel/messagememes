@@ -150,26 +150,28 @@ MemeField::MemeField(const Vei2& center, int nMemes, int fieldWidth, int fieldHe
 	std::mt19937 rng(rd());
 	std::uniform_int_distribution<int> xDist(0, width - 1);
 	std::uniform_int_distribution<int> yDist(0, height - 1);
-	std::uniform_int_distribution<int> startDist(2, 8);
+	std::uniform_int_distribution<int> startDist(0, 2);
 	std::uniform_int_distribution<int> shiftYDist(0, 1);
 
 	//add message memes here
+	//really need to fix the placement code later
+
 	memeXPos = startDist(rng);
-	memeYPos = std::min(rowBottom - 2, yDist(rng) / 2+3);
+	memeYPos = std::min(rowBottom - 2, yDist(rng) / 2 + 3);
 	//message->PhraseGrid.resize(message->PhraseGrid.size() - 1);
-	
+
 	for (auto letter : message->PhraseGrid)
 	{
 		Vei2 letterSpawnPos = { memeXPos,memeYPos };
 		for (auto vec : letter->LetterGrid) {
-			Vei2 letterSegmentPos = letterSpawnPos + vec; 
-			//here's where the trouble is: if vec = {0,0}
-			//then the tile will be spawned at the top left corner
-			//need to implement a check 
-			MemeField::Tile& curTile = TileAt(letterSegmentPos);
-			//need a check here to make sure it's within the memefield dims
-			if (!(curTile.HasMeme())) {
-				curTile.SpawnLetterMeme();  
+			if (vec.x >= 0)  //if it's a valid tile (unused tiles are set to {-1,-1})
+			{
+				Vei2 letterSegmentPos = letterSpawnPos + vec;
+				
+				MemeField::Tile& curTile = TileAt(letterSegmentPos);
+				if (!(curTile.HasMeme())) {
+					curTile.SpawnLetterMeme();
+				}
 			}
 		}
 		//______________ YPos...
@@ -199,7 +201,7 @@ MemeField::MemeField(const Vei2& center, int nMemes, int fieldWidth, int fieldHe
 			rowTop = rowBottom + 1;
 			rowBottom = height;
 			memeXPos = startDist(rng);
-			memeYPos = std::min(rowBottom - 2, height - (yDist(rng) / 2)+2);
+			memeYPos = std::min(rowBottom - 2, height - (yDist(rng) / 2) + 2);
 		}
 	}
 

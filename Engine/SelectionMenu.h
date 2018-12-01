@@ -11,7 +11,6 @@ public:
 	enum class Size
 	{
 		Small,
-		Medium,
 		Large,
 		Count,
 		Invalid
@@ -62,9 +61,6 @@ private:
 			{
 			case Size::Small:
 				SpriteCodex::DrawSmall( pos,gfx );
-				break;
-			case Size::Medium:
-				SpriteCodex::DrawMedium( pos,gfx );
 				break;
 			case Size::Large:
 				SpriteCodex::DrawLarge( pos,gfx );

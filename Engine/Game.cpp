@@ -68,12 +68,6 @@ void Game::UpdateModel()
 				CreateField((int)Size::Small * baseMemes, (int)Size::Small * baseWidth, (int)Size::Small * baseHeight);
 				state = State::Memesweeper;
 				break;
-
-			case SelectionMenu::Size::Medium:
-				CreateField((int)Size::Medium * baseMemes, (int)Size::Medium * baseWidth, (int)Size::Medium * baseHeight);
-				state = State::Memesweeper;
-				break;
-
 			case SelectionMenu::Size::Large:
 				CreateField((int)Size::Large * baseMemes, (int)Size::Large * baseWidth, (int)Size::Large * baseHeight);
 				state = State::Memesweeper;

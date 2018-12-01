@@ -19,8 +19,7 @@ private:
 	enum class Size
 	{
 		Small = 3,
-		Medium = 4,
-		Large = 5
+		Large = 4
 	};
 public:
 	Game( class MainWindow& wnd );

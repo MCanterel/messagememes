@@ -5,6 +5,99 @@
 #include "SpriteCodex.h"
 #include <algorithm>
 
+MemeField::MemeField(const Vei2& center, int nMemes, int fieldWidth, int fieldHeight)
+	:
+	topLeft(center - Vei2(width * SpriteCodex::tileSize, height * SpriteCodex::tileSize) / 2),
+	width(fieldWidth),
+	height(fieldHeight),
+	pTileField(std::make_unique<Tile[]>(width * height)),
+	nMemes(nMemes),  //this is a little roundabout- game.cpp gets the baseMemes from memefield, then, depending on game size, calls memefield here with nMemes. Need to fix.	
+	message(std::make_unique<MemeMessage>())
+{
+	assert(nMemes >= 0 && nMemes < width * height);
+	std::random_device rd;
+	std::mt19937 rng(rd());
+	
+	std::uniform_int_distribution<int> xDist(0, width - 1);
+	std::uniform_int_distribution<int> yDist(0, height - 1);
+
+	std::uniform_int_distribution<int> startXDist(0, 2);
+	std::uniform_int_distribution<int> startYDist(0, 1);
+
+	std::uniform_int_distribution<int> shiftXDist(0, 1);
+	std::uniform_int_distribution<int> shiftYDist(0, 1);
+
+	//add message memes here
+
+	memeXPos = startXDist(rng);  //calc width - n letters in meme * Letterwidth for startDist?
+	//memeYPos = std::min(rowBottom - 2, yDist(rng) / 2 + 3);
+	memeYPos = startYDist(rng);
+	//message->PhraseGrid.resize(message->PhraseGrid.size() - 1);
+
+	for (auto letter : message->PhraseGrid)
+	{
+		Vei2 letterSpawnPos = { memeXPos + shiftXDist(rng),memeYPos + shiftYDist(rng) };
+		for (auto vec : letter->LetterGrid) {
+			if (vec.y >= 0)  //if it's a valid tile (unused tiles are set to {-1,-1})
+			{
+				Vei2 letterSegmentPos = letterSpawnPos + vec;
+				MemeField::Tile& curTile = TileAt(letterSegmentPos);
+				if (!(curTile.HasMeme())) {
+					curTile.SpawnLetterMeme();
+				}
+			}
+		}
+		//______________ YPos...
+		if (memeYPos < rowTop + 1)  //too high
+		{
+			memeYPos = std::max(rowTop, rowTop + shiftYDist(rng));
+		}
+		else if (memeYPos > rowBottom - letterHeight - 1)  //too low
+		{
+			memeYPos = std::max(rowBottom - letterHeight, rowBottom - letterHeight - shiftYDist(rng));
+		}
+		else  //goldilocks
+		{
+			int moveY;
+			startYDist(rng) == 1 ? moveY = shiftYDist(rng) : moveY = -shiftYDist(rng);
+			memeYPos += moveY;
+		}
+
+		//______________ XPos...
+
+		if (memeXPos <= (width - letterWidth))
+		{
+			memeXPos += letterWidth;
+		}
+		else
+		{
+			rowTop = rowBottom;
+			rowBottom = height;
+			memeXPos = startXDist(rng);
+			memeYPos = rowTop + startYDist(rng);
+		}
+	}
+
+	//add various extra memes per nMemes amount
+	for (int nSpawned = 0; nSpawned < nMemes; ++nSpawned)
+	{
+		Vei2 spawnPos;
+		do
+		{
+			spawnPos = { xDist(rng),yDist(rng) };
+		} while (TileAt(spawnPos).HasMeme());
+
+		TileAt(spawnPos).SpawnMeme();
+	}
+
+	for (Vei2 gridPos = { 0,0 }; gridPos.y < height; gridPos.y++)
+	{
+		for (gridPos.x = 0; gridPos.x < width; gridPos.x++)
+		{
+			TileAt(gridPos).SetNeighborMemeCount(CountNeighborMemes(gridPos));
+		}
+	}
+}
 
 void MemeField::Tile::SpawnMeme()
 {
@@ -136,95 +229,6 @@ void MemeField::Tile::SetNeighborMemeCount(int memeCount)
 	nNeighborMemes = memeCount;
 }
 
-MemeField::MemeField(const Vei2& center, int nMemes, int fieldWidth, int fieldHeight)
-	:
-	topLeft(center - Vei2(width * SpriteCodex::tileSize, height * SpriteCodex::tileSize) / 2),
-	width(fieldWidth),
-	height(fieldHeight),
-	pTileField(std::make_unique<Tile[]>(width * height)),
-	nMemes(nMemes),  //this is a little roundabout- game.cpp gets the baseMemes from memefield, then, depending on game size, calls memefield here with nMemes. Need to fix.	
-	message(std::make_unique<MemeMessage>())
-{
-	assert(nMemes >= 0 && nMemes < width * height);
-	std::random_device rd;
-	std::mt19937 rng(rd());
-	std::uniform_int_distribution<int> xDist(0, width - 1);
-	std::uniform_int_distribution<int> yDist(0, height - 1);
-	std::uniform_int_distribution<int> startDist(0, 2);
-	std::uniform_int_distribution<int> shiftYDist(0, 1);
-
-	//add message memes here
-	//really need to fix the placement code later
-
-	memeXPos = startDist(rng);
-	memeYPos = std::min(rowBottom - 2, yDist(rng) / 2 + 3);
-	//message->PhraseGrid.resize(message->PhraseGrid.size() - 1);
-
-	for (auto letter : message->PhraseGrid)
-	{
-		Vei2 letterSpawnPos = { memeXPos,memeYPos };
-		for (auto vec : letter->LetterGrid) {
-			if (vec.x >= 0)  //if it's a valid tile (unused tiles are set to {-1,-1})
-			{
-				Vei2 letterSegmentPos = letterSpawnPos + vec;
-				
-				MemeField::Tile& curTile = TileAt(letterSegmentPos);
-				if (!(curTile.HasMeme())) {
-					curTile.SpawnLetterMeme();
-				}
-			}
-		}
-		//______________ YPos...
-		if (memeYPos < rowTop + memeYSpacing)
-		{
-			memeYPos = std::max(rowTop, rowTop + shiftYDist(rng));
-		}
-		else if (memeYPos > rowBottom - memeYSpacing)
-		{
-			memeYPos = std::max(rowBottom - memeYSpacing, rowBottom - shiftYDist(rng));
-		}
-		else  //if (memeYPos >= rowTop + 5 && memeYPos <= rowBottom - memeYSpacing*2)
-		{
-			int moveY;
-			startDist(rng) == 1 ? moveY = memeYSpacing : moveY = -memeYSpacing;
-			memeYPos += moveY;
-		}
-
-		//______________ XPos...
-
-		if (memeXPos <= (width - 10))
-		{
-			memeXPos += memeXSpacing;
-		}
-		else
-		{
-			rowTop = rowBottom + 1;
-			rowBottom = height;
-			memeXPos = startDist(rng);
-			memeYPos = std::min(rowBottom - 2, height - (yDist(rng) / 2) + 2);
-		}
-	}
-
-	//add various extra memes per nMemes amount
-	for (int nSpawned = 0; nSpawned < nMemes; ++nSpawned)
-	{
-		Vei2 spawnPos;
-		do
-		{
-			spawnPos = { xDist(rng),yDist(rng) };
-		} while (TileAt(spawnPos).HasMeme());
-
-		TileAt(spawnPos).SpawnMeme();
-	}
-
-	for (Vei2 gridPos = { 0,0 }; gridPos.y < height; gridPos.y++)
-	{
-		for (gridPos.x = 0; gridPos.x < width; gridPos.x++)
-		{
-			TileAt(gridPos).SetNeighborMemeCount(CountNeighborMemes(gridPos));
-		}
-	}
-}
 
 void MemeField::Draw(Graphics& gfx) const
 {

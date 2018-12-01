@@ -76,7 +76,7 @@ public:
 		int letterWidth;
 		const std::vector <char> WideLetters { 'g', 'h' ,'m', 'n', 'o', 'q', 't', 'u', 'v', 'w', 'x', 'y', 'z' };
 	};
-	const int maxPhraseSize = 13;
+	const int maxPhraseSize = 20;
 private:
 	void buildMessage(const std::string phrase);
 	const std::string getPhrase() const;

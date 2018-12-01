@@ -65,11 +65,14 @@ private:
 	bool GameIsWon ( ) const;
 private:
 	static constexpr int baseWidth = 20;
-	static constexpr int baseHeight = 4;
-	static constexpr int baseMemes = 0;
+	static constexpr int baseHeight = 7;
+	static constexpr int baseMemes = 6;
+	static constexpr int letterHeight = 6;
+	static constexpr int letterWidth = 6;
+
 	int nMemes;
-	int width = baseWidth;
-	int height = baseHeight;
+	int width;
+	int height;
 	static constexpr int borderThickness = 10;
 	static constexpr Color borderColor = Colors::Blue;
 	Sound sndLose = Sound ( L"spayed.wav" );
@@ -79,8 +82,8 @@ private:
 	std::unique_ptr<MemeMessage> message;
 	int memeXPos = 0;
 	int memeYPos = 0;
-	int memeXSpacing = 6;
-	int memeYSpacing = 3;
+	//int memeXSpacing = 6;
+	//int memeYSpacing = 3;
 	int rowTop = 0;
 	int rowBottom = height / 2;
 };

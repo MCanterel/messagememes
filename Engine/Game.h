@@ -18,9 +18,9 @@ private:
 	};
 	enum class Size
 	{
-		Small = 2,
+		Small = 3,
 		Medium = 4,
-		Large = 6
+		Large = 5
 	};
 public:
 	Game( class MainWindow& wnd );
@@ -28,8 +28,7 @@ public:
 	Game& operator=( const Game& ) = delete;
 	void Go();
 	void CreateField ( int nMemes, int width, int height );
-	//void DestroyField ( );
-private:
+	private:
 	void ComposeFrame();
 	void UpdateModel();
 	/********************************/

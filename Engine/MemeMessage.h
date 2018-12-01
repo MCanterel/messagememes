@@ -56,11 +56,10 @@ public:
 		};
 		int letter;  //this is the final chosen letter
 	};
+	const int maxPhraseSize = 8;
 private:
 	void buildMessage(const std::string phrase);
 	const std::string getPhrase() const;
-private:
-	const int maxPhraseSize = 12;
 public:
 	std::vector <MLetter*> PhraseGrid;
 };

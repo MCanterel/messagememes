@@ -64,8 +64,8 @@ private:
 	int CountNeighborMemes ( const Vei2& gridPos );
 	bool GameIsWon ( ) const;
 private:
-	static constexpr int baseWidth = 10;
-	static constexpr int baseHeight = 4;
+	static constexpr int baseWidth = 16;
+	static constexpr int baseHeight = 3;
 	static constexpr int baseMemes = 0;
 	int nMemes;
 	int width = baseWidth;
@@ -80,7 +80,7 @@ private:
 	int memeXPos = 0;
 	int memeYPos = 0;
 	int memeXSpacing = 6;
-	int memeYSpacing = 2;
+	int memeYSpacing = 3;
 	int rowTop = 0;
 	int rowBottom = height / 2;
 };

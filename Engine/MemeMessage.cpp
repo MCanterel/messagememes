@@ -46,7 +46,9 @@ const std::string MemeMessage::getPhrase() const
 	return target;
 }
 
-MemeMessage::MLetter::MLetter(const char& ltr)
+MemeMessage::MLetter::MLetter(const char& ltr)  
+//fix this by addressing bitset via [] operator
+//simplify and don't include vei2 {0,0} if it isn't there!
 {
 	if (ltr == ' ') {
 		letter = letters[(char)LetterNums::SPACE];

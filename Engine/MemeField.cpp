@@ -1,3 +1,4 @@
+
 #include "MemeField.h"
 #include <assert.h>
 #include <random>
@@ -29,14 +30,14 @@ MemeField::MemeField(const Vei2& center, int nMemes, int fieldWidth, int fieldHe
 
 	//add message memes here
 
-	memeXPos = startXDist(rng);  //calc width - n letters in meme * Letterwidth for startDist?
+	memeXPos = startXDist(rng) + shiftXDist(rng);  //calc width - n letters in meme * Letterwidth for startDist?
 	//memeYPos = std::min(rowBottom - 2, yDist(rng) / 2 + 3);
-	memeYPos = startYDist(rng);
+	memeYPos = startYDist(rng) + shiftYDist(rng);
 	//message->PhraseGrid.resize(message->PhraseGrid.size() - 1);
 
 	for (auto letter : message->PhraseGrid)
 	{
-		Vei2 letterSpawnPos = { memeXPos + shiftXDist(rng),memeYPos + shiftYDist(rng) };
+		Vei2 letterSpawnPos = { memeXPos, memeYPos };
 		for (auto vec : letter->LetterGrid) {
 			if (vec.y >= 0)  //if it's a valid tile (unused tiles are set to {-1,-1})
 			{
@@ -47,6 +48,8 @@ MemeField::MemeField(const Vei2& center, int nMemes, int fieldWidth, int fieldHe
 				}
 			}
 		}
+
+		//next X,Y position sets up here
 		//______________ YPos...
 		if (memeYPos < rowTop + 1)  //too high
 		{
@@ -65,15 +68,16 @@ MemeField::MemeField(const Vei2& center, int nMemes, int fieldWidth, int fieldHe
 
 		//______________ XPos...
 
-		if (memeXPos <= (width - letterWidth))
+		if (memeXPos <= (width - letterWidth * 2))
 		{
-			memeXPos += letterWidth;
+			memeXPos += letterWidth + shiftXDist(rng);
 		}
 		else
 		{
+			// "carriage return" to new line
 			rowTop = rowBottom;
 			rowBottom = height;
-			memeXPos = startXDist(rng);
+			memeXPos = startXDist(rng) + shiftXDist(rng);
 			memeYPos = rowTop + startYDist(rng);
 		}
 	}

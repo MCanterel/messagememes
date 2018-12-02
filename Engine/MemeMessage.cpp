@@ -18,7 +18,7 @@ MemeMessage::~MemeMessage() {
 void MemeMessage::buildMessage(const std::string phrase)
 {
 	for (size_t i = 0; i < phrase.size(); i++) {
-		MLetter* letter = new MLetter((const char&)phrase[i]);
+		MLetter* letter = new MLetter((char&)phrase[i]);
 		PhraseGrid.push_back(letter);
 		//PhraseGrid.push_back(std::move(letter));
 	}
@@ -27,7 +27,7 @@ void MemeMessage::buildMessage(const std::string phrase)
 const std::string MemeMessage::getPhrase() const
 {
 	std::vector <std::string> phraseList;
-	std::ifstream phraseFile("meme_list.txt");
+	std::ifstream phraseFile("meme_list_capitalized.txt");
 
 	for (std::string line; std::getline(phraseFile, line);) {
 		if (line.empty()) {
@@ -46,16 +46,20 @@ const std::string MemeMessage::getPhrase() const
 	return target;
 }
 
-MemeMessage::MLetter::MLetter(const char& ltr)  
-//fix this by addressing bitset via [] operator
+MemeMessage::MLetter::MLetter(char& ltr)  
 {
+	ltr = tolower(ltr);
 	if (ltr == ' ') {
 		letter = letters[(char)LetterNums::SPACE];
-		SetLetterWidth((int)LetterSpace::Narrow);
+		SetLetterWidth((int)LetterSpace::Space);
 	}
 	else {
 		letter = letters[ltr - 'a'];
-		if (IsWideLetter(ltr))
+		if (letter == 'l')
+		{
+			SetLetterWidth((int)LetterSpace::Narrow);
+		}
+		else if (IsWideLetter(ltr))
 		{
 			SetLetterWidth((int)LetterSpace::Wide);
 		}
@@ -64,19 +68,12 @@ MemeMessage::MLetter::MLetter(const char& ltr)
 			SetLetterWidth((int)LetterSpace::Medium);
 		}
 	}
-	//int lastLetterCol = 0;  //i can probs refactor this to just use the letterWidth value later
-	//for (int x = 0; x < 6; x++) {
-	//	for (int y = 0; y < 5; y++) {
-	//		int bitshift = 30 - (x * 5 + y);
-	//		if ((std::bitset<1>(letter >> bitshift)) == 1) {
-	//			lastLetterCol = x;
-	//		}
-	//	}
-	//}
-	int lastLetterCol = letterWidth - 1;  //haha that wuz easy
+
 	MLetter::LetterGrid.resize(letterWidth * 5, { -1,-1 });
-	
-	for (int x = 0; x <= lastLetterCol; x++) {  //IK this is little weird, but it works so not refactoring now
+
+	//IK this is little weird, but it works so not refactoring now
+	//fix this by addressing bitset via [] operator?
+	for (int x = 0; x < letterWidth; x++) { 
 		for (int y = 0; y < 5; y++) {
 			int bitshift = 29 - (x * 5 + y);
 			auto testBit = (std::bitset<1>(letter >> bitshift));

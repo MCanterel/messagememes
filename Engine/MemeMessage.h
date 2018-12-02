@@ -17,7 +17,7 @@ public:
 	{
 	public:
 		MLetter() = default;
-		MLetter(const char& ltr);
+		MLetter(char& ltr);
 		std::vector <Vei2> LetterGrid;
 		const int GetLetter()
 		{
@@ -40,7 +40,8 @@ public:
 		enum class LetterSpace {
 			Narrow = 4,
 			Medium = 5,
-			Wide = 6
+			Wide = 6,
+			Space = 1
 		};
 		int letters[27] =
 		{

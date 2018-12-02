@@ -140,5 +140,6 @@
       <Filter>Resource Files</Filter>
     </Text>
     <Text Include="meme_list.txt" />
+    <Text Include="meme_list_capitalized.txt" />
   </ItemGroup>
 </Project>

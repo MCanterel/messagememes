@@ -252,11 +252,6 @@ Graphics::~Graphics()
 	if( pImmediateContext ) pImmediateContext->ClearState();
 }
 
-RectI Graphics::GetScreenRect()
-{
-	return{ 0,ScreenWidth,0,ScreenHeight };
-}
-
 void Graphics::EndFrame()
 {
 	HRESULT hr;
@@ -306,25 +301,17 @@ void Graphics::EndFrame()
 	}
 }
 
-void Graphics::BeginFrame( Color bg )
+void Graphics::BeginFrame()
 {
 	// clear the sysbuffer
-	std::fill( pSysBuffer,pSysBuffer + Graphics::ScreenHeight * Graphics::ScreenWidth,bg );
+	memset( pSysBuffer,0u,sizeof( Color ) * Graphics::ScreenHeight * Graphics::ScreenWidth );
 }
+
 RectI Graphics::GetRect() const
 {
-	return RectI(0, ScreenWidth, 0, ScreenHeight);
+	return RectI( 0,ScreenWidth,0,ScreenHeight );
 }
-void Graphics::DrawRect(int x0, int y0, int x1, int y1, Color c)
-{
-	for (int y = y0; y < y1; ++y)
-	{
-		for (int x = x0; x < x1; ++x)
-		{
-			PutPixel(x, y, c);
-		}
-	}
-}
+
 void Graphics::PutPixel( int x,int y,Color c )
 {
 	assert( x >= 0 );
@@ -334,24 +321,18 @@ void Graphics::PutPixel( int x,int y,Color c )
 	pSysBuffer[Graphics::ScreenWidth * y + x] = c;
 }
 
-Color Graphics::GetPixel( int x,int y ) const
+void Graphics::DrawRect( int x0,int y0,int x1,int y1,Color c )
 {
-	assert( x >= 0 );
-	assert( x < int( Graphics::ScreenWidth ) );
-	assert( y >= 0 );
-	assert( y < int( Graphics::ScreenHeight ) );
-	return pSysBuffer[Graphics::ScreenWidth * y + x];
-}
-void Graphics::DrawRect(int x0, int y0, int x1, int y1, Color c)
-{
-	for (int y = y0; y < y1; ++y)
+	for( int y = y0; y < y1; ++y )
 	{
-		for (int x = x0; x < x1; ++x)
+		for( int x = x0; x < x1; ++x )
 		{
-			PutPixel(x, y, c);
+			PutPixel( x,y,c );
 		}
 	}
 }
+
+
 //////////////////////////////////////////////////
 //           Graphics Exception
 Graphics::Exception::Exception( HRESULT hr,const std::wstring& note,const wchar_t* file,unsigned int line )

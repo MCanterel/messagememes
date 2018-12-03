@@ -21,22 +21,6 @@ RectI::RectI( const Vei2& topLeft,int width,int height )
 {
 }
 
-bool RectI::IsOverlappingWith( const RectI& other ) const
-{
-	return right > other.left && left < other.right
-		&& bottom > other.top && top < other.bottom;
-}
-
-bool RectI::IsContainedBy( const RectI & other ) const
-{
-	return left >= other.left && right <= other.right &&
-		top >= other.top && bottom <= other.bottom;
-}
-
-bool RectI::Contains( const Vei2& point ) const
-{
-	return point.x >= left && point.x < right && point.y >= top && point.y < bottom;
-}
 
 RectI RectI::FromCenter( const Vei2 & center,int halfWidth,int halfHeight )
 {

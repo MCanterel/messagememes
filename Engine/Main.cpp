@@ -22,6 +22,7 @@
 #include "MainWindow.h"
 #include "Game.h"
 #include "ChiliException.h"
+#include "GDIPlusManager.h"
 
 //#define _CRTDBG_MAP_ALLOC 
 //#include <stdlib.h> 
@@ -38,6 +39,7 @@
 
 int WINAPI wWinMain( HINSTANCE hInst,HINSTANCE,LPWSTR pArgs,INT )
 {
+	GDIPlusManager gdipMan;
 	try
 	{
 		MainWindow wnd( hInst,pArgs );		

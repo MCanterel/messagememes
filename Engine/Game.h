@@ -7,6 +7,7 @@
 #include "MemeField.h"
 #include "SelectionMenu.h"
 #include <memory>
+#include "Clue.h"
 
 class Game
 {
@@ -39,6 +40,7 @@ private:
 	/********************************/
 	/*  User Variables              */
 	std::unique_ptr<MemeField> pField;
+	Clue clue;
 	SelectionMenu menu;
 	State state = State::SelectionMenu;
 	/********************************/

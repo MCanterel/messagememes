@@ -137,27 +137,34 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClInclude Include="ChiliException.h" />
+    <ClInclude Include="ChiliUtil.h" />
     <ClInclude Include="ChiliWin.h" />
+    <ClInclude Include="Codex.h" />
     <ClInclude Include="Colors.h" />
     <ClInclude Include="DXErr.h" />
     <ClInclude Include="Game.h" />
+    <ClInclude Include="GDIPlusManager.h" />
     <ClInclude Include="Graphics.h" />
     <ClInclude Include="Keyboard.h" />
     <ClInclude Include="MainWindow.h" />
     <ClInclude Include="MemeField.h" />
     <ClInclude Include="MemeMessage.h" />
     <ClInclude Include="Mouse.h" />
+    <ClInclude Include="Clue.h" />
     <ClInclude Include="RectI.h" />
     <ClInclude Include="Resource.h" />
     <ClInclude Include="SelectionMenu.h" />
     <ClInclude Include="Sound.h" />
     <ClInclude Include="SoundEffect.h" />
     <ClInclude Include="SpriteCodex.h" />
+    <ClInclude Include="SpriteEffect.h" />
+    <ClInclude Include="Surface.h" />
     <ClInclude Include="Vei2.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="DXErr.cpp" />
     <ClCompile Include="Game.cpp" />
+    <ClCompile Include="GDIPlusManager.cpp" />
     <ClCompile Include="Graphics.cpp" />
     <ClCompile Include="Keyboard.cpp" />
     <ClCompile Include="Main.cpp" />
@@ -168,6 +175,7 @@
     <ClCompile Include="RectI.cpp" />
     <ClCompile Include="Sound.cpp" />
     <ClCompile Include="SpriteCodex.cpp" />
+    <ClCompile Include="Surface.cpp" />
     <ClCompile Include="Vei2.cpp" />
   </ItemGroup>
   <ItemGroup>
@@ -237,6 +245,7 @@
   </ItemGroup>
   <ItemGroup>
     <Image Include="Chili.ico" />
+    <Image Include="Images\y_u_no_guy.jpg" />
   </ItemGroup>
   <ItemGroup>
     <None Include="ClassDiagram.cd" />

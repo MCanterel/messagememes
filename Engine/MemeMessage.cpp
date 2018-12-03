@@ -1,5 +1,8 @@
+#pragma once
 #include <Windows.h>
 #include "MemeMessage.h"
+#include <algorithm>
+#include <string>
 
 MemeMessage::MemeMessage()
 {
@@ -34,6 +37,7 @@ const std::string MemeMessage::getPhrase() const
 			continue;
 		}
 		else {
+			
 			phraseList.push_back(line);
 		}
 	}
@@ -43,6 +47,17 @@ const std::string MemeMessage::getPhrase() const
 	std::uniform_int_distribution<int> dist(0, (int)phraseList.size() - 1);
 	std::string target = phraseList[dist(rng)];
 	target.resize(std::min<size_t>(target.size(),maxPhraseSize));
+
+	//if the target is longer than the width, then insert a line break special tab char in here
+	if (target.size() > maxLettersPerLine)
+	{
+		auto found = target.rfind(" ", maxLettersPerLine);
+		if (found != std::string::npos)
+		{
+			target.replace(found, 1, "\t");
+			//target.resize(found + maxLettersPerLine);
+		}
+	}
 	return target;
 }
 
@@ -52,6 +67,10 @@ MemeMessage::MLetter::MLetter(char& ltr)
 	if (ltr == ' ') {
 		letter = letters[(char)LetterNums::SPACE];
 		SetLetterWidth((int)LetterSpace::Space);
+	}
+	else if (ltr == '\t')
+	{
+		isTab = true;
 	}
 	else {
 		letter = letters[ltr - 'a'];

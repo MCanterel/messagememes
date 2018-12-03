@@ -35,6 +35,10 @@ public:
 		{
 			return (std::count(WideLetters.begin(), WideLetters.end(), c) > 0);
 		}
+		bool IsTab()
+		{
+			return isTab;
+		}
 	private:
 		enum class LetterNums { A, B, C, D, E, F, G, H, I, J, K, L, M, N, O, P, Q, R, S, T, U, V, W, X, Y, Z, SPACE };
 		enum class LetterSpace {
@@ -73,11 +77,13 @@ public:
 			0b100011001110101110011000100000,
 			0b000000000000000000000000000000
 		};
-		int letter;  //this is the final chosen letter
-		int letterWidth;
+		int letter;  //this is the final chosen int representation of the letter. NOT the char
+		int letterWidth = (int)LetterSpace::Narrow;
+		bool isTab = false;
 		const std::vector <char> WideLetters { 'g', 'h' ,'m', 'n', 'o', 'q', 't', 'u', 'v', 'w', 'x', 'y', 'z' };
 	};
-	const int maxPhraseSize = 20;
+	static constexpr int maxPhraseSize = 24;
+	static constexpr int maxLettersPerLine = maxPhraseSize / 2;
 private:
 	void buildMessage(const std::string phrase);
 	const std::string getPhrase() const;

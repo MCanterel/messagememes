@@ -18,7 +18,7 @@ MemeField::MemeField(const Vei2& center, int nMemes, int fieldWidth, int fieldHe
 	assert(nMemes >= 0 && nMemes < width * height);
 	std::random_device rd;
 	std::mt19937 rng(rd());
-	
+
 	std::uniform_int_distribution<int> xDist(0, width - 1);
 	std::uniform_int_distribution<int> yDist(0, height - 1);
 
@@ -28,23 +28,34 @@ MemeField::MemeField(const Vei2& center, int nMemes, int fieldWidth, int fieldHe
 	std::uniform_int_distribution<int> shiftXDist(0, 1);
 	std::uniform_int_distribution<int> shiftYDist(0, 1);
 
-	//add message memes here
-
-	memeXPos = startXDist(rng) + shiftXDist(rng);  //calc width - n letters in meme * Letterwidth for startDist?
-	//memeYPos = std::min(rowBottom - 2, yDist(rng) / 2 + 3);
+	//size_t len = message->PhraseGrid.size();
+	//if (len <= message->maxLettersPerLine)
+	//{
+	//	memeXPos = (width - len) / 2 + shiftXDist(rng);
+	//}
+	//else
+	//{
+		memeXPos = startXDist(rng) + shiftXDist(rng);
+	//}
+	
+ //memeYPos = std::min(rowBottom - 2, yDist(rng) / 2 + 3);
 	memeYPos = startYDist(rng) + shiftYDist(rng);
 	//message->PhraseGrid.resize(message->PhraseGrid.size() - 1);
 
 	for (auto letter : message->PhraseGrid)
 	{
-		Vei2 letterSpawnPos = { memeXPos, memeYPos };
-		for (auto vec : letter->LetterGrid) {
-			if (vec.y >= 0)  //if it's a valid tile (unused tiles are set to {-1,-1})
-			{
-				Vei2 letterSegmentPos = letterSpawnPos + vec;
-				MemeField::Tile& curTile = TileAt(letterSegmentPos);
-				if (!(curTile.HasMeme())) {
-					curTile.SpawnLetterMeme();
+		bool isTab = letter->IsTab();
+		if (!isTab)
+		{
+			Vei2 letterSpawnPos = { memeXPos, memeYPos };
+			for (auto vec : letter->LetterGrid) {
+				if (vec.y >= 0)  //if it's a valid tile (unused tiles are set to {-1,-1})
+				{
+					Vei2 letterSegmentPos = letterSpawnPos + vec;
+					MemeField::Tile& curTile = TileAt(letterSegmentPos);
+					if (!(curTile.HasMeme())) {
+						curTile.SpawnLetterMeme();
+					}
 				}
 			}
 		}
@@ -68,13 +79,14 @@ MemeField::MemeField(const Vei2& center, int nMemes, int fieldWidth, int fieldHe
 
 		//______________ XPos...
 
-		if (memeXPos <= (width - letterWidth * 2))
+		if (memeXPos <= (width - letterWidth * 2) && !isTab)
 		{
 			memeXPos += letterWidth + shiftXDist(rng);
 		}
 		else
 		{
 			// "carriage return" to new line
+			//have to insert a way to get a word boundary in here
 			rowTop = rowBottom;
 			rowBottom = height;
 			memeXPos = startXDist(rng) + shiftXDist(rng);

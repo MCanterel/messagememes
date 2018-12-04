@@ -252,10 +252,6 @@ Graphics::~Graphics()
 	if( pImmediateContext ) pImmediateContext->ClearState();
 }
 
-RectI Graphics::GetScreenRect()
-{
-	return{ 0,ScreenWidth,0,ScreenHeight };
-}
 
 void Graphics::EndFrame()
 {
@@ -315,7 +311,10 @@ RectI Graphics::GetRect() const
 {
 	return RectI(0, ScreenWidth, 0, ScreenHeight);
 }
-
+RectI Graphics::GetScreenRect()
+{
+	return{ 0,ScreenWidth,0,ScreenHeight };
+}
 void Graphics::PutPixel( int x,int y,Color c )
 {
 	assert( x >= 0 );

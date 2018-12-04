@@ -1,10 +1,12 @@
 
+#pragma once
 #include "MemeField.h"
 #include <assert.h>
 #include <random>
 #include "Vei2.h"
 #include "SpriteCodex.h"
 #include <algorithm>
+#include "Graphics.h"
 
 MemeField::MemeField(const Vei2& center, int nMemes, int fieldWidth, int fieldHeight)
 	:
@@ -13,8 +15,11 @@ MemeField::MemeField(const Vei2& center, int nMemes, int fieldWidth, int fieldHe
 	height(fieldHeight),
 	pTileField(std::make_unique<Tile[]>(width * height)),
 	nMemes(nMemes),  //this is a little roundabout- game.cpp gets the baseMemes from memefield, then, depending on game size, calls memefield here with nMemes. Need to fix.	
-	message(std::make_unique<MemeMessage>())
+	message(std::make_unique<MemeMessage>()),	
+	clue(message->GetPhraseText())
 {
+
+	
 	assert(nMemes >= 0 && nMemes < width * height);
 	std::random_device rd;
 	std::mt19937 rng(rd());
@@ -257,6 +262,8 @@ void MemeField::Draw(Graphics& gfx) const
 			TileAt(gridPos).Draw(topLeft + gridPos * SpriteCodex::tileSize, state, gfx);
 		}
 	}
+	clue.Draw(gfx);
+
 }
 
 RectI MemeField::GetRect() const

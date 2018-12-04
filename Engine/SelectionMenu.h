@@ -4,6 +4,8 @@
 #include "SpriteCodex.h"
 #include "Mouse.h"
 #include "Sound.h"
+#include "SpriteEffect.h"
+#include "Codex.h"
 
 class SelectionMenu
 {
@@ -30,8 +32,9 @@ private:
 			if( highlighted )
 			{
 				gfx.DrawRect( rect.GetExpanded( highlightThickness ),highlightColor );
-			}			
+			}			 
 			gfx.DrawRect( rect,Colors::Black );
+			gfx.DrawSprite(gfx.ScreenWidth / 2 - pMemeTitle->GetWidth() / 2,100, *pMemeTitle, SpriteEffect::Copy{});
 			DrawSizeText( s,rect.GetCenter(),gfx );
 		}
 		bool IsHit( const Vei2& pt ) const
@@ -73,6 +76,7 @@ private:
 		bool highlighted = false;
 		Size s;
 		RectI rect;
+		const Surface* pMemeTitle = Codex<Surface>::Retrieve(L"Images/all_your_memes.bmp");
 	};
 public:
 	SelectionMenu( const Vei2& pos )

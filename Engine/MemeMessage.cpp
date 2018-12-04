@@ -6,7 +6,7 @@
 
 MemeMessage::MemeMessage()
 {
-	const std::string phrase = getPhrase();
+	phrase = getPhrase();
 	buildMessage(phrase);
 }
 
@@ -18,7 +18,7 @@ MemeMessage::~MemeMessage() {
 	}
 }
 
-void MemeMessage::buildMessage(const std::string phrase)
+void MemeMessage::buildMessage(std::string phrase)
 {
 	for (size_t i = 0; i < phrase.size(); i++) {
 		MLetter* letter = new MLetter((char&)phrase[i]);
@@ -27,10 +27,10 @@ void MemeMessage::buildMessage(const std::string phrase)
 	}
 }
 
-const std::string MemeMessage::getPhrase() const
+std::string MemeMessage::getPhrase() const
 {
 	std::vector <std::string> phraseList;
-	std::ifstream phraseFile("meme_list_capitalized.txt");
+	std::ifstream phraseFile("meme_list.txt");
 
 	for (std::string line; std::getline(phraseFile, line);) {
 		if (line.empty()) {

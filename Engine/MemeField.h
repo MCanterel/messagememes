@@ -6,6 +6,7 @@
 #include <vector>
 #include "MemeMessage.h"
 #include <memory>
+#include "Clue.h"
 
 class MemeField
 {
@@ -80,6 +81,7 @@ private:
 	State state = State::Memeing;
 	std::unique_ptr<Tile[]> pTileField;
 	std::unique_ptr<MemeMessage> message;
+	Clue clue;
 	int memeXPos = 0;
 	int memeYPos = 0;
 	int rowTop = 0;

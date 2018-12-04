@@ -90,6 +90,9 @@
     <ClInclude Include="Graphics.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="mc_utils.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="DXErr.cpp">
@@ -155,7 +158,10 @@
     <Image Include="Chili.ico">
       <Filter>Resource Files</Filter>
     </Image>
-    <Image Include="Images\y_u_no_guy.jpg">
+    <Image Include="Images\all_your_memes.bmp">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="Images\yunoguy.jpg">
       <Filter>Resource Files</Filter>
     </Image>
   </ItemGroup>

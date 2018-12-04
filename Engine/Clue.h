@@ -2,7 +2,11 @@
 
 #include "Vei2.h"
 #include "SpriteEffect.h"
+#include "Surface.h"
 #include "Codex.h"
+#include <string>
+//#include "mc_utils.h"
+
 
 class Clue
 {
@@ -14,75 +18,32 @@ private:
 		Dying
 	};
 public:
-	Clue( const Vei2& pos )
-		:
-		pos( pos )
+	Clue(std::string clueName )
+		
 	{
-	}
-	void Draw( Graphics& gfx ) const
-	{
-		// calculate drawing base
-		const auto draw_pos = pos;
-		// switch on effectState to determine drawing method
-		switch( effectState )
-		{
-		case EffectState::Hit:
-			// flash white for hit
-			gfx.DrawSprite( int( draw_pos.x ),int( draw_pos.y ),*pClueSurface,
-							SpriteEffect::Substitution{ Colors::White,Colors::White }
-			);
-			break;
-		case EffectState::Dying:
-			// draw dissolve effect during dying (tint red)
-			gfx.DrawSprite( int( draw_pos.x ),int( draw_pos.y ),*pClueSurface,
-							SpriteEffect::DissolveHalfTint{ Colors::White,Colors::Red,
-							1.0f - effectTime / dissolveDuration }
-			);
-			break;
-		case EffectState::Normal:
-			gfx.DrawSprite( int( draw_pos.x ),int( draw_pos.y ),*pClueSurface,
-							SpriteEffect::Chroma{ Colors::White }
-			);
-			break;
-		}
+		std::wstring sName(clueName.begin(), clueName.end());
+		std::wstring lName = L"Images/" + sName;
+		//const std::wstring fullName = delExtraSpaces(lName);
+		lName.erase(std::remove_if(lName.begin(), lName.end(), ::isspace), lName.end());
+		
+		pClueSurface = (Codex<Surface>::Retrieve(lName));
 	}
 	
-	void Update( float dt )
+	void Draw(Graphics& gfx) const
 	{
-	
-		// always update effect time (who cares brah?)
-		effectTime += dt;
-		// effect state machine logic
-		//switch( effectState )
-		//{
-		//case EffectState::Hit:
-		//	if( effectTime >= hitFlashDuration )
-		//	{
-		//		// if we are dead, transition to dying dissolve state
-		//		if( IsDead() )
-		//		{
-		//			effectState = EffectState::Dying;
-		//			effectTime = 0.0f;
-		//		}
-		//		else
-		//		{
-		//			effectState = EffectState::Normal;
-		//		}
-		//	}
-		//	break;
-		//}
+		gfx.DrawSprite(gfx.ScreenWidth /2 - pClueSurface->GetWidth() / 2 , posY, *pClueSurface, SpriteEffect::Copy{});
 	}
-
-	const Vei2& GetPos() const
+	const int GetPosY() const
 	{
-		return pos;
+		return posY;
 	}
 
 private:
-	const Surface* pClueSurface = Codex<Surface>::Retrieve( L"Images/y_u_no_guy.jpg" );
-	Vei2 pos;
+	const Surface* pClueSurface;
+	int posY = 100;
 	static constexpr float dissolveDuration = 0.6f;
 	static constexpr float hitFlashDuration = 0.045f;
 	float effectTime = 0.0f;
 	EffectState effectState = EffectState::Normal;
+	//const std::wstring cName;
 };

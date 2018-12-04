@@ -147,6 +147,7 @@
     <ClInclude Include="Graphics.h" />
     <ClInclude Include="Keyboard.h" />
     <ClInclude Include="MainWindow.h" />
+    <ClInclude Include="mc_utils.h" />
     <ClInclude Include="MemeField.h" />
     <ClInclude Include="MemeMessage.h" />
     <ClInclude Include="Mouse.h" />
@@ -245,7 +246,8 @@
   </ItemGroup>
   <ItemGroup>
     <Image Include="Chili.ico" />
-    <Image Include="Images\y_u_no_guy.jpg" />
+    <Image Include="Images\all_your_memes.bmp" />
+    <Image Include="Images\yunoguy.jpg" />
   </ItemGroup>
   <ItemGroup>
     <None Include="ClassDiagram.cd" />

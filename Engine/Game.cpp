@@ -8,8 +8,7 @@ Game::Game ( MainWindow& wnd )
 	:
 	wnd ( wnd ),
 	gfx ( wnd ),
-	menu ( { gfx.GetRect ( ).GetCenter ( ).x,200 } ),
-	clue(Vei2{0,0})
+	menu ( { gfx.GetRect ( ).GetCenter ( ).x,800 } )
 {
 }
 

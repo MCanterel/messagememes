@@ -68,8 +68,6 @@ public:
 	{
 		DrawRect(rect.left, rect.top, rect.right, rect.bottom, c);
 	}
-
-
 	void DrawRectThin( const RectI& rect,Color color,const RectI& clip = GetScreenRect() )
 	{
 		// get clipped version of rectangle
@@ -135,7 +133,7 @@ public:
 		// mirror in x depending on reversed bool switch
 		if( !reversed )
 		{
-			// cliping is different depending on mirroring status
+			// clipping is different depending on mirroring status
 			if( x < clip.left )
 			{
 				srcRect.left += clip.left - x;
@@ -222,6 +220,6 @@ private:
 	Color*                                              pSysBuffer = nullptr;
 public:
 	static constexpr int ScreenWidth = 1600;
-	static constexpr int ScreenHeight = 1200;
+	static constexpr int ScreenHeight = 1400;
 	static RectI GetScreenRect();
 };

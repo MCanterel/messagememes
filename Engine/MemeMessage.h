@@ -13,6 +13,10 @@ public:
 	MemeMessage();
 	~MemeMessage();
 	MemeMessage(const MemeMessage&) = delete;
+	std::string GetPhraseText()
+	{
+		return phrase + ".jpg";
+	}
 	class MLetter
 	{
 	public:
@@ -39,6 +43,8 @@ public:
 		{
 			return isTab;
 		}
+
+
 	private:
 		enum class LetterNums { A, B, C, D, E, F, G, H, I, J, K, L, M, N, O, P, Q, R, S, T, U, V, W, X, Y, Z, SPACE };
 		enum class LetterSpace {
@@ -80,13 +86,14 @@ public:
 		int letter;  //this is the final chosen int representation of the letter. NOT the char
 		int letterWidth = (int)LetterSpace::Narrow;
 		bool isTab = false;
-		const std::vector <char> WideLetters { 'g', 'h' ,'m', 'n', 'o', 'q', 't', 'u', 'v', 'w', 'x', 'y', 'z' };
+		const std::vector <char> WideLetters{ 'g', 'h' ,'m', 'n', 'o', 'q', 't', 'u', 'v', 'w', 'x', 'y', 'z' };
 	};
 	static constexpr int maxPhraseSize = 24;
 	static constexpr int maxLettersPerLine = maxPhraseSize / 2;
 private:
 	void buildMessage(const std::string phrase);
-	const std::string getPhrase() const;
+	std::string getPhrase() const;
+	std::string phrase;
 public:
 	std::vector <MLetter*> PhraseGrid;
 };

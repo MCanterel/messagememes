@@ -10,11 +10,11 @@
 
 MemeField::MemeField(const Vei2& center, int nMemes, int fieldWidth, int fieldHeight)
 	:
-	topLeft(center - Vei2(width * SpriteCodex::tileSize, height * SpriteCodex::tileSize) / 2),
+	topLeft(center - Vei2(width * SpriteCodex::tileSize, height * SpriteCodex::tileSize- 500) / 2),  //fix the magic number 400
 	width(fieldWidth),
 	height(fieldHeight),
 	pTileField(std::make_unique<Tile[]>(width * height)),
-	nMemes(nMemes),  //this is a little roundabout- game.cpp gets the baseMemes from memefield, then, depending on game size, calls memefield here with nMemes. Need to fix.	
+	nMemes(nMemes),  //awkward- game.cpp gets the baseMemes from memefield. Need to fix.	
 	message(std::make_unique<MemeMessage>()),	
 	clue(message->GetPhraseText())
 {

@@ -255,7 +255,6 @@
   <ItemGroup>
     <Text Include="meme_list_capitalized.txt" />
     <Text Include="meme_list.txt" />
-    <Text Include="useful_phrases.txt" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

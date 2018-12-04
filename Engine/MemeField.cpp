@@ -33,6 +33,9 @@ MemeField::MemeField(const Vei2& center, int nMemes, int fieldWidth, int fieldHe
 	std::uniform_int_distribution<int> shiftXDist(0, 1);
 	std::uniform_int_distribution<int> shiftYDist(0, 1);
 
+	//TODO fix all this crap.
+	//grab the length of the PhraseGrid, then center the lil fucker
+
 	//size_t len = message->PhraseGrid.size();
 	//if (len <= message->maxLettersPerLine)
 	//{
@@ -75,7 +78,7 @@ MemeField::MemeField(const Vei2& center, int nMemes, int fieldWidth, int fieldHe
 		{
 			memeYPos = std::max(rowBottom - letterHeight, rowBottom - letterHeight - shiftYDist(rng));
 		}
-		else  //goldilocks
+		else  //thass right
 		{
 			int moveY;
 			startYDist(rng) == 1 ? moveY = shiftYDist(rng) : moveY = -shiftYDist(rng);
@@ -84,14 +87,13 @@ MemeField::MemeField(const Vei2& center, int nMemes, int fieldWidth, int fieldHe
 
 		//______________ XPos...
 
-		if (memeXPos <= (width - letterWidth * 2) && !isTab)
+		if (memeXPos <= (width - letterWidth * 2) && !isTab)  //tab used to demarcate new line
 		{
 			memeXPos += letterWidth + shiftXDist(rng);
 		}
 		else
 		{
 			// "carriage return" to new line
-			//have to insert a way to get a word boundary in here
 			rowTop = rowBottom;
 			rowBottom = height;
 			memeXPos = startXDist(rng) + shiftXDist(rng);
@@ -162,7 +164,7 @@ void MemeField::Tile::Draw(const Vei2& screenPos, MemeField::State fieldState, G
 			break;
 		}
 	}
-	else // we are fucked
+	else // we are done
 	{
 		switch (state)
 		{

@@ -315,16 +315,7 @@ RectI Graphics::GetRect() const
 {
 	return RectI(0, ScreenWidth, 0, ScreenHeight);
 }
-void Graphics::DrawRect(int x0, int y0, int x1, int y1, Color c)
-{
-	for (int y = y0; y < y1; ++y)
-	{
-		for (int x = x0; x < x1; ++x)
-		{
-			PutPixel(x, y, c);
-		}
-	}
-}
+
 void Graphics::PutPixel( int x,int y,Color c )
 {
 	assert( x >= 0 );

@@ -56,13 +56,20 @@ public:
 	void EndFrame();
 	void BeginFrame( Color bg = Colors::Black );
 	Color GetPixel( int x,int y ) const;
+
 	RectI GetRect() const;
-	void PutPixel( int x,int y,int r,int g,int b )
+	void PutPixel(int x, int y, int r, int g, int b)
 	{
-		PutPixel( x,y,{ unsigned char( r ),unsigned char( g ),unsigned char( b ) } );
+		PutPixel(x, y, { unsigned char(r),unsigned char(g),unsigned char(b) });
 	}
-	void PutPixel( int x,int y,Color c );
-	// draw a thin line rect [top-left:bottom-right)
+	void PutPixel(int x, int y, Color c);
+	void DrawRect(int x0, int y0, int x1, int y1, Color c);
+	void DrawRect(const RectI& rect, Color c)
+	{
+		DrawRect(rect.left, rect.top, rect.right, rect.bottom, c);
+	}
+
+
 	void DrawRectThin( const RectI& rect,Color color,const RectI& clip = GetScreenRect() )
 	{
 		// get clipped version of rectangle
@@ -106,8 +113,7 @@ public:
 			}
 		}
 	}
-	void DrawRect(int x0, int y0, int x1, int y1, Color c);
-
+	
 	template<typename E>
 	void DrawSprite( int x,int y,const Surface& s,E effect,bool reversed = false )
 	{

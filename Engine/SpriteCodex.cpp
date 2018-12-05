@@ -1006,6 +1006,10 @@ void SpriteCodex::DrawTileFlag( const Vei2& pos,Graphics& gfx )
 	gfx.PutPixel( 11 + pos.x,12 + pos.y,0,0,0 );
 }
 
+//void SpriteCodex::DrawTileBomb(const Vei2& pos, Graphics& gfx)
+//{
+//	gfx.DrawSprite(pos.x, pos.y, *pTileBombSurface, SpriteEffect::Copy{});
+//}
 void SpriteCodex::DrawTileBomb( const Vei2& pos,Graphics& gfx )
 {
 	gfx.PutPixel( 0 + pos.x,0 + pos.y,128,128,128 );

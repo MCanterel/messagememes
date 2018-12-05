@@ -5,30 +5,24 @@
 #include "Surface.h"
 #include "Codex.h"
 #include <string>
-//#include "mc_utils.h"
-
 
 class Clue
 {
-private:
-	enum class EffectState
-	{
-		Normal,
-		Hit,
-		Dying
-	};
+
 public:
 	Clue(std::string clueName )
 		
 	{
 		std::wstring sName(clueName.begin(), clueName.end());
 		std::wstring lName = L"Images/" + sName;
-		//const std::wstring fullName = delExtraSpaces(lName);
 		lName.erase(std::remove_if(lName.begin(), lName.end(), ::isspace), lName.end());
-		
 		pClueSurface = (Codex<Surface>::Retrieve(lName));
 	}
-	
+	//need to remove that pClueSurface from the Codex in Clue class dtor? I'm watching the mem usage creep up.
+	//but when I delete pClueSurface, it periodically fucks with the dtor in Surface, so leaving dtor out of this class
+	/*~Clue() {
+		delete pClueSurface;
+	}*/
 	void Draw(Graphics& gfx) const
 	{
 		gfx.DrawSprite(gfx.ScreenWidth /2 - pClueSurface->GetWidth() / 2 , posY, *pClueSurface, SpriteEffect::Copy{});
@@ -43,7 +37,4 @@ private:
 	int posY = 100;
 	static constexpr float dissolveDuration = 0.6f;
 	static constexpr float hitFlashDuration = 0.045f;
-	float effectTime = 0.0f;
-	EffectState effectState = EffectState::Normal;
-	//const std::wstring cName;
 };

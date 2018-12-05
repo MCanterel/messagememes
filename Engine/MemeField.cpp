@@ -164,7 +164,7 @@ void MemeField::Tile::Draw(const Vei2& screenPos, MemeField::State fieldState, G
 			break;
 		}
 	}
-	else // we are done
+	else // we are done fucked
 	{
 		switch (state)
 		{

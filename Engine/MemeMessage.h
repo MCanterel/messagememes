@@ -21,7 +21,7 @@ public:
 	{
 	public:
 		MLetter() = default;
-		MLetter(char& ltr);
+		explicit MLetter(char& ltr);
 		std::vector <Vei2> LetterGrid;
 		const int GetLetter()
 		{
@@ -44,7 +44,6 @@ public:
 			return isTab;
 		}
 
-
 	private:
 		enum class LetterNums { A, B, C, D, E, F, G, H, I, J, K, L, M, N, O, P, Q, R, S, T, U, V, W, X, Y, Z, SPACE };
 		enum class LetterSpace {
@@ -53,6 +52,7 @@ public:
 			Wide = 6,
 			Space = 1
 		};
+		//array of int representations of letter tiles
 		int letters[27] =
 		{
 			0b011111010010100011110000000000,
@@ -91,7 +91,7 @@ public:
 	static constexpr int maxPhraseSize = 24;
 	static constexpr int maxLettersPerLine = maxPhraseSize / 2;
 private:
-	void buildMessage(const std::string phrase);
+	void buildMessage(const std::string& phrase);
 	std::string getPhrase() const;
 	std::string phrase;
 public:

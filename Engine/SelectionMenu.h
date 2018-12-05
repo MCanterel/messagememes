@@ -63,10 +63,10 @@ private:
 			switch( s )
 			{
 			case Size::Small:
-				SpriteCodex::DrawSmall( pos,gfx );
+				SpriteCodex::DrawSmallMenuItem( pos,gfx );
 				break;
 			case Size::Large:
-				SpriteCodex::DrawLarge( pos,gfx );
+				SpriteCodex::DrawLargeMenuItem( pos,gfx );
 				break;
 			}
 		}

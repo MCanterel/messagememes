@@ -1,4 +1,3 @@
-
 #pragma once
 
 #include "Keyboard.h"
@@ -7,7 +6,6 @@
 #include "MemeField.h"
 #include "SelectionMenu.h"
 #include <memory>
-
 
 class Game
 {
@@ -31,16 +29,11 @@ public:
 	private:
 	void ComposeFrame();
 	void UpdateModel();
-	/********************************/
-	/*  User Functions              */
-	/********************************/
+
 private:
 	MainWindow& wnd;
 	Graphics gfx;
-	/********************************/
-	/*  User Variables              */
 	std::unique_ptr<MemeField> pField;
 	SelectionMenu menu;
 	State state = State::SelectionMenu;
-	/********************************/
 };

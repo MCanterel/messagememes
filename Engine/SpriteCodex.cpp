@@ -9134,7 +9134,7 @@ void SpriteCodex::DrawWin( const Vei2& pos,Graphics& gfx )
 	gfx.PutPixel( 170 + x,182 + y,0,0,74 );
 }
 
-void SpriteCodex::DrawSmall( const Vei2& pos,Graphics& gfx )
+void SpriteCodex::DrawSmallMenuItem( const Vei2& pos,Graphics& gfx )
 {
 	const int x = pos.x - 90;
 	const int y = pos.y - 20;
@@ -11335,7 +11335,7 @@ void SpriteCodex::DrawSmall( const Vei2& pos,Graphics& gfx )
 	gfx.PutPixel( 23 + x,40 + y,25,25,25 );
 }
 
-void SpriteCodex::DrawLarge( const Vei2 & pos,Graphics & gfx )
+void SpriteCodex::DrawLargeMenuItem( const Vei2 & pos,Graphics & gfx )
 {
 	const int x = pos.x - 174 / 2;
 	const int y = pos.y - 20;

@@ -34,6 +34,6 @@ public:
 	//
 	static constexpr int sizeselWidth = 240;
 	static constexpr int sizeselHeight = 56;
-	static void DrawSmall( const Vei2& pos,Graphics& gfx );
-	static void DrawLarge( const Vei2& pos,Graphics& gfx );
+	static void DrawSmallMenuItem( const Vei2& pos,Graphics& gfx );
+	static void DrawLargeMenuItem( const Vei2& pos,Graphics& gfx );
 };

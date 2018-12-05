@@ -18,12 +18,12 @@ MemeMessage::~MemeMessage() {
 	}
 }
 
-void MemeMessage::buildMessage(std::string phrase)
+void MemeMessage::buildMessage(const std::string& phrase)
 {
 	for (size_t i = 0; i < phrase.size(); i++) {
+		//had trouble making this a unique_ptr
 		MLetter* letter = new MLetter((char&)phrase[i]);
 		PhraseGrid.push_back(letter);
-		//PhraseGrid.push_back(std::move(letter));
 	}
 }
 
@@ -48,14 +48,14 @@ std::string MemeMessage::getPhrase() const
 	std::string target = phraseList[dist(rng)];
 	target.resize(std::min<size_t>(target.size(),maxPhraseSize));
 
-	//if the target is longer than the width, then insert a line break special tab char in here
+	// if the target is longer than the width, then insert a line break special tab char in here
+	// need some work here
 	if (target.size() > maxLettersPerLine)
 	{
 		auto found = target.rfind(" ", maxLettersPerLine);
 		if (found != std::string::npos)
 		{
 			target.replace(found, 1, "\t");
-			//target.resize(found + maxLettersPerLine);
 		}
 	}
 	return target;

@@ -79,7 +79,7 @@ void Game::UpdateModel()
 
 void Game::CreateField ( int nMemes,int width, int height )
 {
-	pField = std::make_unique<MemeField>( gfx.GetRect ( ).GetCenter ( ), nMemes, width, height );
+	pField = std::make_unique<MemeField>( gfx.GetRect ( ).GetCenter ( ), nMemes, width, height, gfx );
 }
 
 void Game::ComposeFrame ( )

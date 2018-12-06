@@ -17,6 +17,7 @@ public:
 		std::wstring lName = L"Images/" + sName;
 		lName.erase(std::remove_if(lName.begin(), lName.end(), ::isspace), lName.end());
 		pClueSurface = (Codex<Surface>::Retrieve(lName));
+		
 	}
 	//need to remove that pClueSurface from the Codex in Clue class dtor? I'm watching the mem usage creep up.
 	//but when I delete pClueSurface, it periodically fucks with the dtor in Surface, so leaving dtor out of this class
@@ -34,6 +35,8 @@ public:
 
 private:
 	const Surface* pClueSurface;
+
+
 	int posY = 100;
 	static constexpr float dissolveDuration = 0.6f;
 	static constexpr float hitFlashDuration = 0.045f;

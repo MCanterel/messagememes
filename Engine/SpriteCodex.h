@@ -12,8 +12,10 @@ public:
 	static constexpr int tileSize = 16;
 	static constexpr Color baseColor = { 192,192,192 };
 
-	// I'm trying to implement surfaces here to draw the tiles:
-	//----> static Surface* pTileBombSurface = new Surface(L"Images/tile_bomb.bmp");
+	// I'm trying to implement surfaces here to draw the tiles using static functions:
+	//static Surface* pTileBombSurface = new Surface(L"Images/tile_bomb.bmp");
+	// or:
+	//static Surface* pTileBombSurface = (Codex<Surface>::Retrieve(L"Images/tile_bomb.bmp"));
 	// then in cpp file DrawTileBomb() would be something like:
 	//---->  gfx.DrawSprite(pos.x, pos.y, pTileBombSurface, SpriteEffect::Copy{});
 	// but it doesn't work as a static data member. why?

@@ -7,6 +7,7 @@
 #include "MemeMessage.h"
 #include <memory>
 #include "Clue.h"
+#include <unordered_map>
 
 class MemeField
 {
@@ -28,12 +29,43 @@ private:
 			Flagged,
 			Revealed
 		};
+		struct TileSprite
+		{
+			int index;
+			std::wstring name;
+		};
+		std::vector <TileSprite> TileSprites =  //14 tiles
+		{
+			{0, L"tile0.bmp"			},
+			{1, L"tile1.bmp"			},
+			{2, L"tile2.bmp"			},
+			{3, L"tile3.bmp"			},
+			{4, L"tile4.bmp"			},
+			{5, L"tile5.bmp"			},
+			{6, L"tile6.bmp"			},
+			{7, L"tile7.bmp"			},
+			{8, L"tile8.bmp"			},
+			{9,L"tilebutton.bmp"		},
+			{10, L"tilecross.bmp"	},
+			{11, L"tileflag.bmp"		},
+			{12, L"tilebomb.bmp"		},
+			{13, L"tilebombred.bmp"	}
+		};
 	public:
-		Tile() = default;
+		//Tile() = default;
+		Tile()
+		{
+			for (size_t i = 0; i < sizeof(TileSurfaces) / sizeof(TileSurfaces[0]); i++)
+			{
+				TileSurfaces[i] = (Codex<Surface>::Retrieve(L"Images/TileSprites/" + TileSprites[i].name));
+			}		
+		}
+
 		void SpawnMeme();
 		void SpawnLetterMeme();
 		bool HasMeme() const;
 		void Draw(const Vei2& screenPos, MemeField::State fucked, Graphics& gfx) const;
+		void DrawTileNumber(const Vei2& pos, int n, Graphics& gfx) const;
 		void Reveal();
 		bool IsRevealed() const;
 		void ToggleFlag();
@@ -45,10 +77,11 @@ private:
 		bool hasMeme = false;
 		bool isLetter = false;
 		int nNeighborMemes = -1;
+		const Surface* TileSurfaces[14];
 	};
 public:
 	MemeField ( ) = default;
-	MemeField ( const Vei2& center, int nMemes, int fieldWidth, int fieldHeight );
+	MemeField ( const Vei2& center, int nMemes, int fieldWidth, int fieldHeight, Graphics& gfx);
 	void Draw ( Graphics& gfx ) const;
 	RectI GetRect ( ) const;
 	void OnRevealClick ( const Vei2& screenPos );
@@ -82,6 +115,7 @@ private:
 	std::unique_ptr<Tile[]> pTileField;
 	std::unique_ptr<MemeMessage> message;
 	Clue clue;
+	Graphics& gfx;
 	int memeXPos = 0;
 	int memeYPos = 0;
 	int rowTop = 0;

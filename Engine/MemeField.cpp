@@ -8,7 +8,7 @@
 #include <algorithm>
 #include "Graphics.h"
 
-MemeField::MemeField(const Vei2& center, int nMemes, int fieldWidth, int fieldHeight)
+MemeField::MemeField(const Vei2& center, int nMemes, int fieldWidth, int fieldHeight, Graphics& gfx)
 	:
 	topLeft(center - Vei2(width * SpriteCodex::tileSize, height * SpriteCodex::tileSize- 500) / 2),  //fix the magic number 400
 	width(fieldWidth),
@@ -16,7 +16,8 @@ MemeField::MemeField(const Vei2& center, int nMemes, int fieldWidth, int fieldHe
 	pTileField(std::make_unique<Tile[]>(width * height)),
 	nMemes(nMemes),  //awkward- game.cpp gets the baseMemes from memefield. Need to fix.	
 	message(std::make_unique<MemeMessage>()),	
-	clue(message->GetPhraseText())
+	clue(message->GetPhraseText()),
+	gfx(gfx)
 {
 
 	
@@ -146,20 +147,24 @@ void MemeField::Tile::Draw(const Vei2& screenPos, MemeField::State fieldState, G
 		switch (state)
 		{
 		case State::Hidden:
-			SpriteCodex::DrawTileButton(screenPos, gfx);
+			//SpriteCodex::DrawTileButton(screenPos, gfx);
+			gfx.DrawSprite(screenPos.x, screenPos.y, *TileSurfaces[9], SpriteEffect::Copy{});
 			break;
 		case State::Flagged:
-			SpriteCodex::DrawTileButton(screenPos, gfx);
+			//SpriteCodex::DrawTileButton(screenPos, gfx);
+			gfx.DrawSprite(screenPos.x, screenPos.y, *TileSurfaces[9], SpriteEffect::Copy{});
 			SpriteCodex::DrawTileFlag(screenPos, gfx);
 			break;
 		case State::Revealed:
 			if (!HasMeme())
 			{
 				SpriteCodex::DrawTileNumber(screenPos, nNeighborMemes, gfx);
+
 			}
 			else
 			{
-				SpriteCodex::DrawTileBomb(screenPos, gfx);
+				//SpriteCodex::DrawTileBomb(screenPos, gfx);
+				gfx.DrawSprite(screenPos.x, screenPos.y, *TileSurfaces[12], SpriteEffect::Copy{});
 			}
 			break;
 		}
@@ -173,28 +178,33 @@ void MemeField::Tile::Draw(const Vei2& screenPos, MemeField::State fieldState, G
 			{
 				if (!isLetter)
 				{
-					SpriteCodex::DrawTileBomb(screenPos, gfx);
+					//SpriteCodex::DrawTileBomb(screenPos, gfx);
+					gfx.DrawSprite(screenPos.x, screenPos.y, *TileSurfaces[12], SpriteEffect::Copy{});
 				}
 				else
 				{
-					SpriteCodex::DrawTileBombRed(screenPos, gfx);
+					//SpriteCodex::DrawTileBombRed(screenPos, gfx);
+					gfx.DrawSprite(screenPos.x, screenPos.y, *TileSurfaces[13], SpriteEffect::Copy{});
 				}
 
 			}
 			else
 			{
-				SpriteCodex::DrawTileButton(screenPos, gfx);
+				//SpriteCodex::DrawTileButton(screenPos, gfx);
+				gfx.DrawSprite(screenPos.x, screenPos.y, *TileSurfaces[9], SpriteEffect::Copy{});
 			}
 			break;
 		case State::Flagged:
 			if (HasMeme())
 			{
-				SpriteCodex::DrawTileBomb(screenPos, gfx);
+				//SpriteCodex::DrawTileBomb(screenPos, gfx);
+				gfx.DrawSprite(screenPos.x, screenPos.y, *TileSurfaces[12], SpriteEffect::Copy{});
 				SpriteCodex::DrawTileFlag(screenPos, gfx);
 			}
 			else
 			{
-				SpriteCodex::DrawTileBomb(screenPos, gfx);
+				//SpriteCodex::DrawTileBomb(screenPos, gfx);
+				gfx.DrawSprite(screenPos.x, screenPos.y, *TileSurfaces[12], SpriteEffect::Copy{});
 				SpriteCodex::DrawTileCross(screenPos, gfx);
 			}
 			break;
@@ -205,10 +215,46 @@ void MemeField::Tile::Draw(const Vei2& screenPos, MemeField::State fieldState, G
 			}
 			else
 			{
-				SpriteCodex::DrawTileBombRed(screenPos, gfx);
+				//SpriteCodex::DrawTileBombRed(screenPos, gfx);
+				gfx.DrawSprite(screenPos.x, screenPos.y, *TileSurfaces[13], SpriteEffect::Copy{});
 			}
 			break;
 		}
+	}
+}
+
+void MemeField::Tile::DrawTileNumber(const Vei2 & pos, int n, Graphics& gfx) const
+{
+	assert(n >= 0 && n <= 8);
+	switch (n)
+	{
+	case 0:
+		gfx.DrawSprite(pos.x, pos.y, *TileSurfaces[0], SpriteEffect::Copy{});
+		break;
+	case 1:
+		gfx.DrawSprite(pos.x, pos.y, *TileSurfaces[1], SpriteEffect::Copy{});
+		break;
+	case 2:
+		gfx.DrawSprite(pos.x, pos.y, *TileSurfaces[2], SpriteEffect::Copy{});
+		break;
+	case 3:
+		gfx.DrawSprite(pos.x, pos.y, *TileSurfaces[3], SpriteEffect::Copy{});
+		break;
+	case 4:
+		gfx.DrawSprite(pos.x, pos.y, *TileSurfaces[4], SpriteEffect::Copy{});
+		break;
+	case 5:
+		gfx.DrawSprite(pos.x, pos.y, *TileSurfaces[5], SpriteEffect::Copy{});
+		break;
+	case 6:
+		gfx.DrawSprite(pos.x, pos.y, *TileSurfaces[6], SpriteEffect::Copy{});
+		break;
+	case 7:
+		gfx.DrawSprite(pos.x, pos.y, *TileSurfaces[7], SpriteEffect::Copy{});
+		break;
+	case 8:
+		SpriteCodex::DrawTileNumber(pos, 8, gfx);
+		break;
 	}
 }
 

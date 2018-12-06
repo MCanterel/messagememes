@@ -147,23 +147,20 @@ void MemeField::Tile::Draw(const Vei2& screenPos, MemeField::State fieldState, G
 		switch (state)
 		{
 		case State::Hidden:
-			//SpriteCodex::DrawTileButton(screenPos, gfx);
+			
 			gfx.DrawSprite(screenPos.x, screenPos.y, *TileSurfaces[9], SpriteEffect::Copy{});
 			break;
 		case State::Flagged:
-			//SpriteCodex::DrawTileButton(screenPos, gfx);
 			gfx.DrawSprite(screenPos.x, screenPos.y, *TileSurfaces[9], SpriteEffect::Copy{});
-			SpriteCodex::DrawTileFlag(screenPos, gfx);
+			SpriteCodex::DrawTileFlag(screenPos, gfx);  //todo: change to surface drawing
 			break;
 		case State::Revealed:
 			if (!HasMeme())
 			{
-				SpriteCodex::DrawTileNumber(screenPos, nNeighborMemes, gfx);
-
+				DrawTileNumber(screenPos, nNeighborMemes, gfx);
 			}
 			else
 			{
-				//SpriteCodex::DrawTileBomb(screenPos, gfx);
 				gfx.DrawSprite(screenPos.x, screenPos.y, *TileSurfaces[12], SpriteEffect::Copy{});
 			}
 			break;
@@ -178,44 +175,38 @@ void MemeField::Tile::Draw(const Vei2& screenPos, MemeField::State fieldState, G
 			{
 				if (!isLetter)
 				{
-					//SpriteCodex::DrawTileBomb(screenPos, gfx);
 					gfx.DrawSprite(screenPos.x, screenPos.y, *TileSurfaces[12], SpriteEffect::Copy{});
 				}
 				else
 				{
-					//SpriteCodex::DrawTileBombRed(screenPos, gfx);
 					gfx.DrawSprite(screenPos.x, screenPos.y, *TileSurfaces[13], SpriteEffect::Copy{});
 				}
 
 			}
 			else
 			{
-				//SpriteCodex::DrawTileButton(screenPos, gfx);
 				gfx.DrawSprite(screenPos.x, screenPos.y, *TileSurfaces[9], SpriteEffect::Copy{});
 			}
 			break;
 		case State::Flagged:
 			if (HasMeme())
 			{
-				//SpriteCodex::DrawTileBomb(screenPos, gfx);
 				gfx.DrawSprite(screenPos.x, screenPos.y, *TileSurfaces[12], SpriteEffect::Copy{});
-				SpriteCodex::DrawTileFlag(screenPos, gfx);
+				SpriteCodex::DrawTileFlag(screenPos, gfx);  //todo: change to surface drawing
 			}
 			else
 			{
-				//SpriteCodex::DrawTileBomb(screenPos, gfx);
 				gfx.DrawSprite(screenPos.x, screenPos.y, *TileSurfaces[12], SpriteEffect::Copy{});
-				SpriteCodex::DrawTileCross(screenPos, gfx);
+				SpriteCodex::DrawTileCross(screenPos, gfx);  //todo: change to surface drawing
 			}
 			break;
 		case State::Revealed:
 			if (!HasMeme())
 			{
-				SpriteCodex::DrawTileNumber(screenPos, nNeighborMemes, gfx);
+				DrawTileNumber(screenPos, nNeighborMemes, gfx);
 			}
 			else
 			{
-				//SpriteCodex::DrawTileBombRed(screenPos, gfx);
 				gfx.DrawSprite(screenPos.x, screenPos.y, *TileSurfaces[13], SpriteEffect::Copy{});
 			}
 			break;
@@ -253,7 +244,7 @@ void MemeField::Tile::DrawTileNumber(const Vei2 & pos, int n, Graphics& gfx) con
 		gfx.DrawSprite(pos.x, pos.y, *TileSurfaces[7], SpriteEffect::Copy{});
 		break;
 	case 8:
-		SpriteCodex::DrawTileNumber(pos, 8, gfx);
+		SpriteCodex::DrawTile8(pos,gfx);  //todo: change to surface drawing
 		break;
 	}
 }
